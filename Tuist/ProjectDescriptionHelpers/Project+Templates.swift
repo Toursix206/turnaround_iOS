@@ -18,7 +18,8 @@ public extension Project {
         dependencies: [TargetDependency] = [],
         sources: SourceFilesList = ["Sources/**"],
         resources: ResourceFileElements? = nil,
-        infoPlist: InfoPlist = .default
+        infoPlist: InfoPlist = .default,
+        resourceSynthesizers: ProjectDescription.ResourceSynthesizer
     ) -> Project {
         let settings: Settings = .settings(
             base: [:],

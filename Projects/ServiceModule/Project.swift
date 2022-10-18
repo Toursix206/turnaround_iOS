@@ -15,5 +15,6 @@ let project = Project.makeModule(
     product: .staticFramework,
     dependencies: [
         .project(target: "ThirdPartyLib", path: .relativeToRoot("Projects/ThirdPartyLib"))
-    ]
+    ],
+    resourceSynthesizers: .assets()
 )
