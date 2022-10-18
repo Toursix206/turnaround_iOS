@@ -21,5 +21,6 @@ let project = Project.makeModule(
         .SPM.Alamofire,
         .SPM.Moya,
         .SPM.ReactorKit
-    ]
+    ],
+    resourceSynthesizers: .assets()
 )

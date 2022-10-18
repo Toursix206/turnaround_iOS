@@ -16,5 +16,6 @@ let project = Project.makeModule(
     dependencies: [
         .project(target: "ServiceModule", path: .relativeToRoot("Projects/ServiceModule"))
     ],
-    resources: ["Resources/**"]
+    resources: ["Resources/**"],
+    resourceSynthesizers: .assets()
 )

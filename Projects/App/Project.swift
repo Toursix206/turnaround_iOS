@@ -18,5 +18,6 @@ let project = Project.makeModule(
         .Project.FeatureModule
     ],
     resources: ["Resources/**"],
-    infoPlist: .file(path: "Support/Info.plist")
+    infoPlist: .file(path: "Support/Info.plist"),
+    resourceSynthesizers: .assets()
 )
