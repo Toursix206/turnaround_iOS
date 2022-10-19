@@ -23,7 +23,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         let viewController = RoomTestViewController()
         
         window = UIWindow(frame: windowScene.coordinateSpace.bounds)
-        window?.backgroundColor = .white
+        window?.backgroundColor = .black
         window?.windowScene = windowScene
         window?.rootViewController = viewController
         window?.makeKeyAndVisible()

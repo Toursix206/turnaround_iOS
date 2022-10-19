@@ -10,7 +10,13 @@ import UIKit
 import SnapKit
 import Then
 
+enum DirtyLevel {
+    case clean, dirty
+}
+
 class RoomTestView: UIView {
+
+    //var dirtyLevel: DirtyLevel = .dirty
 
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -36,7 +42,7 @@ class RoomTestView: UIView {
     }
 
     var windowImageView = UIImageView().then {
-        $0.image = FeatureModuleAsset.window.image
+        $0.image = FeatureModuleAsset.transparentWindow.image
     }
 
     private func render() {
