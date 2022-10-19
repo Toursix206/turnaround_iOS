@@ -20,7 +20,10 @@ let project = Project.makeModule(
         .SPM.RxRelay,
         .SPM.Alamofire,
         .SPM.Moya,
-        .SPM.ReactorKit
+        .SPM.ReactorKit,
+        .SPM.Then,
+        .SPM.Lottie,
+        .SPM.Snapkit
     ],
     resourceSynthesizers: .assets()
 )
