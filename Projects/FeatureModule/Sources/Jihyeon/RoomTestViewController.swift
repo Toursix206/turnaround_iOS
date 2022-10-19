@@ -6,4 +6,18 @@
 //  Copyright © 2022 turnaround.io. All rights reserved.
 //
 
-import Foundation
+import UIKit
+
+public class RoomTestViewController: UIViewController {
+
+    var mainView = RoomTestView()
+
+    public override func loadView() {
+        super.loadView()
+        view = mainView
+    }
+
+    public override func viewDidLoad() {
+        super.viewDidLoad()
+    }
+}
