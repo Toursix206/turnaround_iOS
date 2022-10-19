@@ -20,6 +20,6 @@ public extension TargetDependency.SPM {
     static let ReactorKit = TargetDependency.external(name: "ReactorKit")
     static let Lottie = TargetDependency.external(name: "Lottie")
     static let Then = TargetDependency.external(name: "Then")
-    static let Snapkit = TargetDependency.external(name: "Snapkit")
+    static let Snapkit = TargetDependency.external(name: "SnapKit")
 }
 
