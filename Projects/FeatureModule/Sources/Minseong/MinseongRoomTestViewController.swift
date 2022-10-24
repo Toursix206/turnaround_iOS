@@ -7,7 +7,17 @@
 //
 
 import UIKit
+<<<<<<< HEAD:Projects/FeatureModule/Sources/Minseong/MinseongRoomTestViewController.swift
 import ThirdPartyLib
+=======
+import SwiftUI
+
+struct VCPreView:PreviewProvider {
+    static var previews: some View {
+        RoomTestViewController().toPreview()
+    }
+}
+>>>>>>> [#13] FEAT: 브러쉬 버튼 배치:Projects/FeatureModule/Sources/Jihyeon/RoomTestViewController.swift
 
 import RxSwift
 import RxCocoa
