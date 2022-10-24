@@ -16,8 +16,6 @@ enum DirtyLevel {
 
 class RoomTestView: UIView {
 
-    var disposeBag = DisposeBag()
-
     //var dirtyLevel: DirtyLevel = .dirty
 
     override init(frame: CGRect) {
