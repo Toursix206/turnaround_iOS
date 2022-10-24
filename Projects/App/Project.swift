@@ -8,7 +8,7 @@
 import ProjectDescription
 import ProjectDescriptionHelpers
 
-import Plugin
+import MyPlugin
 
 let project = Project.makeModule(
     name: "TurnAround-iOS",

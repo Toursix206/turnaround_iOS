@@ -34,6 +34,10 @@ let dependencies = Dependencies(
         .remote(
             url: "https://github.com/SnapKit/SnapKit.git",
             requirement: .upToNextMajor(from: "5.0.1")
+        ),
+        .remote(
+            url: "https://github.com/RxSwiftCommunity/RxGesture.git",
+            requirement: .upToNextMajor(from: "4.0.0")
         )
     ],
     platforms: [.iOS]

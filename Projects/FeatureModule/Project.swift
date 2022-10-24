@@ -8,13 +8,14 @@
 import ProjectDescription
 import ProjectDescriptionHelpers
 
-import Plugin
+import MyPlugin
 
 let project = Project.makeModule(
     name: "FeatureModule",
     product: .staticFramework,
     dependencies: [
-        .project(target: "ServiceModule", path: .relativeToRoot("Projects/ServiceModule"))
+//        .project(target: "ServiceModule", path: .relativeToRoot("Projects/ServiceModule"))
+        .Project.ServiceModule
     ],
     resources: ["Resources/**"],
     resourceSynthesizers: .assets()

@@ -8,7 +8,7 @@
 import ProjectDescription
 import ProjectDescriptionHelpers
 
-import Plugin
+import MyPlugin
 
 let project = Project.makeModule(
     name: "ThirdPartyLib",
@@ -23,7 +23,8 @@ let project = Project.makeModule(
         .SPM.ReactorKit,
         .SPM.Then,
         .SPM.Lottie,
-        .SPM.Snapkit
+        .SPM.Snapkit,
+        .SPM.RxGesture
     ],
     resourceSynthesizers: .assets()
 )

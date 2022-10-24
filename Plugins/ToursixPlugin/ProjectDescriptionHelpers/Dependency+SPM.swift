@@ -21,5 +21,6 @@ public extension TargetDependency.SPM {
     static let Lottie = TargetDependency.external(name: "Lottie")
     static let Then = TargetDependency.external(name: "Then")
     static let Snapkit = TargetDependency.external(name: "SnapKit")
+    static let RxGesture = TargetDependency.external(name: "RxGesture")
 }
 

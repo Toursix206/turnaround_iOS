@@ -7,5 +7,5 @@
 
 import ProjectDescription
 
-let plugin = Plugin(name: "Plugin")
+let plugin = Plugin(name: "MyPlugin")
 

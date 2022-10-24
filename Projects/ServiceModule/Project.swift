@@ -8,13 +8,14 @@
 import ProjectDescription
 import ProjectDescriptionHelpers
 
-import Plugin
+import MyPlugin
 
 let project = Project.makeModule(
     name: "ServiceModule",
     product: .staticFramework,
     dependencies: [
-        .project(target: "ThirdPartyLib", path: .relativeToRoot("Projects/ThirdPartyLib"))
+//        .project(target: "ThirdPartyLib", path: .relativeToRoot("Projects/ThirdPartyLib"))
+        .Project.ThirdPartyLib
     ],
     resourceSynthesizers: .assets()
 )
