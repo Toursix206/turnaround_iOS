@@ -7,10 +7,6 @@
 //
 
 import UIKit
-
-import ThirdPartyLib
-import ServiceModule
-
 import RxSwift
 import RxGesture
 

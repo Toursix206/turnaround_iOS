@@ -9,6 +9,7 @@
 import UIKit
 import SnapKit
 import Then
+import Lottie
 
 enum DirtyLevel {
     case clean, dirty
@@ -27,6 +28,17 @@ class RoomTestView: UIView {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    
+    // MARK: Lottie Test
+    lazy var animationView: LottieAnimationView = {
+        
+        let animation = LottieAnimationView(name: "782-check-mark-success", bundle: .module)
+        animation.loopMode = .playOnce
+        animation.play { finished in
+            self.animationView.isHidden = true
+        }
+        return animation
+    }()
 
     var roomView = UIView()
 
@@ -66,8 +78,12 @@ class RoomTestView: UIView {
         [emptyRoomImageView,
          bedImageView, deskAndChairImageView, windowImageView,
         bedTouchView, deskAndChairTouchView, windowTouchView,
-        bedBrushButton, deskAndChairBrushButton, windowBrushButton
+        bedBrushButton, deskAndChairBrushButton, windowBrushButton, animationView
         ].forEach { roomView.addSubview($0) }
+        
+        animationView.snp.makeConstraints { make in
+            make.size.equalToSuperview()
+        }
 
         roomView.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview()
