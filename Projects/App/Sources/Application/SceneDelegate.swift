@@ -30,17 +30,17 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         guard let windowScene = (scene as? UIWindowScene) else { return }
         debugPrint(isNotFirstTime)
         switch isNotFirstTime {
-        case true:
+        case false:
             // 최초실행 O -> 온보딩 화면 넘기기
             UserDefaults.standard.set(false, forKey: "isNotFristTime")
-            let viewController = IntroViewController()
+            let viewController = FirstProfileSettingViewController()
             
             window = UIWindow(frame: windowScene.coordinateSpace.bounds)
             window?.backgroundColor = .systemBackground
             window?.windowScene = windowScene
             window?.rootViewController = viewController
             window?.makeKeyAndVisible()
-        case false:
+        case true:
             // 최초실행 X -> 메인 화면 넘기기
             let viewController = RoomTestViewController()
             
