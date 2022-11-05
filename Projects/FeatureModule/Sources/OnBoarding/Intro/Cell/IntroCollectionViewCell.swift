@@ -19,6 +19,7 @@ class IntroCollectionViewCell: UICollectionViewCell {
     var slideDescriptionLabel: UILabel = {
         var label = UILabel()
         label.font = UIFont(font: FeatureModuleFontFamily.Pretendard.bold, size: 20)
+        label.numberOfLines = 0
         label.textColor = .label
         label.textAlignment = .center
         return label
@@ -41,15 +42,14 @@ class IntroCollectionViewCell: UICollectionViewCell {
             make.width.equalTo(360)
             make.height.equalTo(300)
             make.centerX.equalToSuperview()
-            make.top.equalToSuperview().offset(100)
-            
+            make.top.leading.trailing.equalToSuperview()
         }
         
         slideDescriptionLabel.snp.makeConstraints { make in
-            make.width.equalTo(178)
+            make.width.equalTo(360)
             make.height.equalTo(60)
             make.centerX.equalToSuperview()
-            make.top.equalToSuperview().offset(444)
+            make.top.equalTo(slideImageView.snp.bottom).offset(48)
         }
     }
 }

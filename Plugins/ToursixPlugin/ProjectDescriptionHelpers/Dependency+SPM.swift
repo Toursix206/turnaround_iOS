@@ -22,5 +22,7 @@ public extension TargetDependency.SPM {
     static let Then = TargetDependency.external(name: "Then")
     static let Snapkit = TargetDependency.external(name: "SnapKit")
     static let RxGesture = TargetDependency.external(name: "RxGesture")
+    static let DiffableDataSources = TargetDependency.external(name: "DiffableDataSources")
+    static let RxDataSources = TargetDependency.external(name: "RxDataSources")
 }
 
