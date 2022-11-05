@@ -28,7 +28,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         let isNotFirstTime = UserDefaults.standard.bool(forKey: "isNotFirstTime")
         
         guard let windowScene = (scene as? UIWindowScene) else { return }
-        debugPrint(isNotFirstTime)
+        
         switch isNotFirstTime {
         case false:
             // 최초실행 O -> 온보딩 화면 넘기기
