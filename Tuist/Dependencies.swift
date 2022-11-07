@@ -47,7 +47,14 @@ let dependencies = Dependencies(
             url: "https://github.com/ra1028/DiffableDataSources.git",
             requirement: .upToNextMajor(from: "0.5.0")
         ),
-        .remote(url: "https://github.com/RxSwiftCommunity/RxDataSources.git", requirement: .upToNextMajor(from: "5.0.0"))
+        .remote(
+            url: "https://github.com/RxSwiftCommunity/RxDataSources.git",
+            requirement: .upToNextMajor(from: "5.0.0")
+        ),
+        .remote(
+            url: "https://github.com/RxSwiftCommunity/RxAlamofire.git",
+            requirement: .upToNextMajor(from: "6.1.2")
+        )
     ],
     platforms: [.iOS]
 )

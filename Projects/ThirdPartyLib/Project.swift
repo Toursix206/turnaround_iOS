@@ -27,7 +27,8 @@ let project = Project.makeModule(
         .SPM.RxGesture,
         .SPM.SwiftKeychainWrapper,
         .SPM.DiffableDataSources,
-        .SPM.RxDataSources
+        .SPM.RxDataSources,
+        .SPM.RxAlamofire
     ],
     resourceSynthesizers: .assets()
 )

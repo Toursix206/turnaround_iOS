@@ -25,5 +25,6 @@ public extension TargetDependency.SPM {
     static let SwiftKeychainWrapper = TargetDependency.external(name: "SwiftKeychainWrapper")
     static let DiffableDataSources = TargetDependency.external(name: "DiffableDataSources")
     static let RxDataSources = TargetDependency.external(name: "RxDataSources")
+    static let RxAlamofire = TargetDependency.external(name: "RxAlamofire")
 }
 
