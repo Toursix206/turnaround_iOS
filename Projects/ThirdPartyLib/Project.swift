@@ -27,7 +27,9 @@ let project = Project.makeModule(
         .SPM.RxGesture,
         .SPM.DiffableDataSources,
         .SPM.RxDataSources,
-        .SPM.RxAlamofire
+        .SPM.RxAlamofire,
+        .SPM.KakaoSDK,
+        .SPM.RxKakaoSDK
     ],
     resourceSynthesizers: .assets()
 )
