@@ -24,5 +24,6 @@ public extension TargetDependency.SPM {
     static let RxGesture = TargetDependency.external(name: "RxGesture")
     static let DiffableDataSources = TargetDependency.external(name: "DiffableDataSources")
     static let RxDataSources = TargetDependency.external(name: "RxDataSources")
+    static let RxAlamofire = TargetDependency.external(name: "RxAlamofire")
 }
 

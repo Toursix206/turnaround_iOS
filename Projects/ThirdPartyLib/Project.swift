@@ -26,7 +26,8 @@ let project = Project.makeModule(
         .SPM.Snapkit,
         .SPM.RxGesture,
         .SPM.DiffableDataSources,
-        .SPM.RxDataSources
+        .SPM.RxDataSources,
+        .SPM.RxAlamofire
     ],
     resourceSynthesizers: .assets()
 )
