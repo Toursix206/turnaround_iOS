@@ -28,7 +28,9 @@ let project = Project.makeModule(
         .SPM.SwiftKeychainWrapper,
         .SPM.DiffableDataSources,
         .SPM.RxDataSources,
-        .SPM.RxAlamofire
+        .SPM.RxAlamofire,
+        .SPM.KakaoSDK,
+        .SPM.RxKakaoSDK
     ],
     resourceSynthesizers: .assets()
 )

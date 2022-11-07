@@ -26,5 +26,7 @@ public extension TargetDependency.SPM {
     static let DiffableDataSources = TargetDependency.external(name: "DiffableDataSources")
     static let RxDataSources = TargetDependency.external(name: "RxDataSources")
     static let RxAlamofire = TargetDependency.external(name: "RxAlamofire")
+    static let KakaoSDK = TargetDependency.external(name: "KakaoSDK")
+    static let RxKakaoSDK = TargetDependency.external(name: "RxKakaoSDK")
 }
 
