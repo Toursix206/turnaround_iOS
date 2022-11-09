@@ -38,7 +38,10 @@ let dependencies = Dependencies(
         .remote(
             url: "https://github.com/RxSwiftCommunity/RxGesture.git",
             requirement: .upToNextMajor(from: "4.0.0")
-        )
+        ),
+        .remote(
+            url: "https://github.com/jrendel/SwiftKeychainWrapper",
+            requirement: .revision("185a3165346a03767101c4f62e9a545a0fe0530f"))
     ],
     platforms: [.iOS]
 )
