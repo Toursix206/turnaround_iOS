@@ -24,7 +24,8 @@ let project = Project.makeModule(
         .SPM.Then,
         .SPM.Lottie,
         .SPM.Snapkit,
-        .SPM.RxGesture
+        .SPM.RxGesture,
+        .SPM.SwiftKeychainWrapper
     ],
     resourceSynthesizers: .assets()
 )
