@@ -11,8 +11,20 @@ import RxSwift
 import RxCocoa
 import RxDataSources
 import Then
+import ReactorKit
+import KakaoSDKAuth
+import ServiceModule
 
-public class IntroViewController: UIViewController {
+public class IntroViewController: UIViewController, View {
+    
+    public typealias Reactor = IntroReactor
+    
+    public var disposeBag = DisposeBag()
+    
+    var introView = IntroView()
+    
+    
+    var slideObservable = Observable.of(IntroModel.slideContents)
     
     var introCollectionView = UICollectionView(
         frame: .zero,
@@ -27,14 +39,6 @@ public class IntroViewController: UIViewController {
         $0.isPagingEnabled = true
         $0.register(cell: IntroCollectionViewCell.self)
     }
-    
-    var disposeBag = DisposeBag()
-    
-    var introView = IntroView()
-    
-    var slideObservable = Observable.of(IntroModel.slideContents)
-    
-    
     
     var currentPage = 0 {
         didSet{
@@ -62,11 +66,62 @@ public class IntroViewController: UIViewController {
         super.viewDidLoad()
         view.addSubview(introCollectionView)
         render()
-        bind()
+        bindViews()
         
     }
     
-    func bind() {
+    public func bind(reactor: IntroReactor) {
+        
+        self.rx.viewDidLoad
+            .map { Reactor.Action.isKakaoAvailable }
+            .bind(to: reactor.action)
+            .disposed(by: disposeBag)
+        
+        self.introView.signInWithKakakoButton.rx.tap
+            .map{ Reactor.Action.tappedKakaoSignUp }
+            .bind(to: reactor.action)
+            .disposed(by: disposeBag)
+        
+        reactor.state
+            .map { $0.authState }
+            .distinctUntilChanged()
+            .filter { $0 == AuthState.authenticated }
+            .subscribe(onNext: { [weak self] authState in
+                print("AuthState is \(authState)")
+                switch authState {
+                case .authenticated:
+                    // 서버로 FCM토큰, authType, accessToekn 넘겨주기
+                    print("WTF")
+                    
+                case .unAuthenticated:
+                    print("FATAL ERROR: THIS SHOULD BE NOT HAPPENNING")
+                }
+            })
+            .disposed(by: disposeBag)
+        
+        reactor.state
+            .map { $0.loginState }
+            .distinctUntilChanged()
+            .subscribe(onNext: { [weak self] loginState in
+                print("LoginState is \(loginState)")
+                switch loginState {
+                case .logout:
+                    print("ERROR: ALREADY LOGGED OUT")
+                    
+                case .unregistered:
+                    print("ERROR: NOT REGISTERED")
+                    
+                case .login:
+                    // 프로필 설정 뷰로 옮기기
+                    print("WTF")
+                }
+            })
+            .disposed(by: disposeBag)
+        
+        
+    }
+    
+    func bindViews() {
         
         introView.nextButton.rx.tap
             .subscribe(onNext: {
