@@ -85,8 +85,11 @@ extension SplashViewController {
     }
 
     private func transferToOnboarding(_ isLoginFlow: Bool) {
-        let vc = IntroViewController()
+        let serviceProvider = ServiceProvider()
+        let reactor = IntroReactor(provider: serviceProvider)
+        let vc = IntroViewController(reactor)
         vc.modalPresentationStyle = .fullScreen
+        vc.modalTransitionStyle = .crossDissolve
         self.view.window?.rootViewController = vc
     }
 }

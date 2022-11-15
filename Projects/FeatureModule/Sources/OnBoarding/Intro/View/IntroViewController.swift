@@ -18,7 +18,12 @@ import ServiceModule
 public class IntroViewController: UIViewController, View {
     
     public typealias Reactor = IntroReactor
+
     public var disposeBag = DisposeBag()
+    private let appleLoginManager = AppleOAuthManager()
+    private let kakaoLoginManager = KakaoOAuthManager()
+    private var signInRelay = PublishRelay<(String?, Error?)>()
+
     var introView = IntroView()
     
     var slideObservable = Observable.of(IntroModel.slideContents)
@@ -44,18 +49,74 @@ public class IntroViewController: UIViewController, View {
         super.loadView()
         view = introView
     }
+
+    public init(_ reactor: Reactor) {
+        super.init(nibName: nil, bundle: nil)
+        configureAppleSignIn()
+        configureKakaoSignIn()
+        self.reactor = reactor
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     public override func viewDidLoad() {
         super.viewDidLoad()
+    }
+    
+    public func bind(reactor: Reactor) {
+        bindAction(reactor)
+        bindState(reactor)
         bindViews()
     }
-    
-    public func bind(reactor: IntroReactor) {
-        
+}
+
+extension IntroViewController {
+
+    func bindAction(_ reactor: Reactor) {
+
+        introView.signInWithKakakoButton.rx.tap
+            .map { _ in Reactor.Action.didTapSignIn(.Kakao) }
+            .bind(to: reactor.action)
+            .disposed(by: disposeBag)
+
+        introView.signInWithAppleButton.rx.tap
+            .map { _ in Reactor.Action.didTapSignIn(.Apple) }
+            .bind(to: reactor.action)
+            .disposed(by: disposeBag)
+
+        signInRelay
+            .map { Reactor.Action.login(oAuthToken: $0.0, error: $0.1) }
+            .bind(to: reactor.action)
+            .disposed(by: disposeBag)
     }
-    
-    func bindViews() {
-        
+
+    func bindState(_ reactor: Reactor) {
+        reactor.state.map { $0.signInType }
+            .distinctUntilChanged()
+            .compactMap { $0 }
+            .asDriver(onErrorJustReturn: nil)
+            .drive(onNext: login)
+            .disposed(by: disposeBag)
+
+        reactor.state.map { $0.enterInfoFlag }
+            .distinctUntilChanged()
+            .compactMap { $0 }
+            .asDriver(onErrorJustReturn: false)
+            .drive(onNext: transferToEnterInfo)
+            .disposed(by: disposeBag)
+
+        reactor.state.map { $0.enterTabBarFlag }
+            .distinctUntilChanged()
+            .compactMap { $0 }
+            .asDriver(onErrorJustReturn: false)
+            .drive(onNext: transferToTabBar)
+            .disposed(by: disposeBag)
+    }
+
+    private func bindViews() {
+
         introView.nextButton.rx.tap
             .subscribe(onNext: {
                 if self.currentPage == 2 {
@@ -73,7 +134,7 @@ public class IntroViewController: UIViewController, View {
                 }
             })
             .disposed(by: disposeBag)
-        
+
         slideObservable
             .bind(to: (introView.introCollectionView.rx.items(
                 cellIdentifier: IntroCollectionViewCell.className,
@@ -83,11 +144,66 @@ public class IntroViewController: UIViewController, View {
                 cell.slideDescriptionLabel.text = content.description
             }
             .disposed(by: disposeBag)
-        
+
         introView.introCollectionView.rx.setDelegate(self)
             .disposed(by: disposeBag)
     }
-    
+}
+
+// state와 연결 될 Drive onNext 메서드
+extension IntroViewController {
+    private func login(_ signInType: SignInType?) {
+
+        guard let signInType = signInType else {
+            return
+        }
+
+        switch signInType {
+        case .Apple:
+            appleLoginManager.login()
+        case .Kakao:
+            kakaoLoginManager.login()
+        }
+
+    }
+
+    private func transferToEnterInfo(_ isSuccess: Bool) {
+        print("🐣🐣🐣🐣🐣🐣🐣🐣🐣🐣🐣🐣🐣🐣🐣🐣🐣🐣🐣🐣isEnterInfoSuccess = \(isSuccess) 오예오예오예")
+    }
+
+    private func transferToTabBar(_ isSuccess: Bool) {
+        print("🐣🐣🐣🐣🐣🐣🐣🐣🐣🐣🐣🐣🐣🐣🐣🐣🐣🐣🐣🐣isTabBarSuccess = \(isSuccess) 오예오예오예")
+    }
+}
+
+// 소셜 로그인 메서드
+extension IntroViewController {
+
+    private func configureAppleSignIn() {
+
+        appleLoginManager.configure(in: self)
+
+        appleLoginManager.onSuccess = { [weak self] identifyToken, accessToken in
+            self?.signInRelay.accept((identifyToken, nil))
+        }
+
+        appleLoginManager.onFailure = { [weak self] error in
+            self?.signInRelay.accept((nil, error))
+        }
+    }
+
+    private func configureKakaoSignIn() {
+
+        kakaoLoginManager.configure(appKey: "d22501ce396283c614192a90f04e3510")
+
+        kakaoLoginManager.onSuccess = { [weak self] identifyToken, _ in
+            self?.signInRelay.accept((identifyToken, nil))
+        }
+
+        kakaoLoginManager.onFailure = { [weak self] error in
+            self?.signInRelay.accept((nil, error))
+        }
+    }
 }
 
 extension IntroViewController: UICollectionViewDelegateFlowLayout {
