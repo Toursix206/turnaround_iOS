@@ -39,17 +39,13 @@ class IntroCollectionViewCell: UICollectionViewCell {
         [slideImageView, slideDescriptionLabel].forEach { addSubview($0) }
         
         slideImageView.snp.makeConstraints { make in
-            make.width.equalTo(360)
-            make.height.equalTo(300)
-            make.centerX.equalToSuperview()
             make.top.leading.trailing.equalToSuperview()
+            make.width.equalTo(slideImageView.snp.height).multipliedBy(1.2)
         }
         
         slideDescriptionLabel.snp.makeConstraints { make in
-            make.width.equalTo(360)
-            make.height.equalTo(60)
-            make.centerX.equalToSuperview()
-            make.top.equalTo(slideImageView.snp.bottom).offset(48)
+            make.leading.trailing.bottom.equalToSuperview()
+            make.top.equalTo(slideImageView.snp.bottom)
         }
     }
 }

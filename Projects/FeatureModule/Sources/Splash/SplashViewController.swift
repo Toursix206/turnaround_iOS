@@ -85,6 +85,8 @@ extension SplashViewController {
     }
 
     private func transferToOnboarding(_ isLoginFlow: Bool) {
-        print("🐣🐣🐣🐣🐣🐣🐣🐣🐣🐣🐣🐣🐣🐣🐣🐣🐣🐣🐣🐣isLoginFlow = \(isLoginFlow) 오예오예오예")
+        let vc = IntroViewController()
+        vc.modalPresentationStyle = .fullScreen
+        self.view.window?.rootViewController = vc
     }
 }
