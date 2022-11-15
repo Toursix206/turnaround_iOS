@@ -18,6 +18,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Override point for customization after application launch.
         RxImagePickerDelegateProxy.register { RxImagePickerDelegateProxy(imagePicker: $0) }
         AuthServiceManager.getKakaoAuthService().initialize()
+
+        removeKeychainAtFirstLaunch()
+        
         return true
     }
 
@@ -34,7 +37,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // If any sessions were discarded while the application was not running, this will be called shortly after application:didFinishLaunchingWithOptions.
         // Use this method to release any resources that were specific to the discarded scenes, as they will not return.
     }
+}
 
+extension AppDelegate {
+    private func removeKeychainAtFirstLaunch() {
+      guard UserInformation.isFirstLaunch() else {
+        return
+      }
 
+      Keychain.shared.removeAllKeys()
+    }
 }
 
