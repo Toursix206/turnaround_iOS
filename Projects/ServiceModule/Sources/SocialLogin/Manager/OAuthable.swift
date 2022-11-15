@@ -12,7 +12,7 @@ public typealias Success = ((String, String?) -> ())
 public typealias Failure = ((Error) -> ())
 
 public protocol OAuthable {
-  func login()
-  var onSuccess: Success? { get set }
-  var onFailure: Failure? { get set }
+    func login()
+    var onSuccess: Success? { get set }
+    var onFailure: Failure? { get set }
 }
