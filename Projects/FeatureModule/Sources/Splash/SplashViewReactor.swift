@@ -7,36 +7,88 @@
 //
 
 import ReactorKit
+import ServiceModule
 
-final class SplashReactor: Reactor {
+public final class SplashReactor: Reactor {
 
-    let initialState: State = State()
+    public let initialState: State = State()
+    private let provider: ServiceProviderType
 
-    enum Action {
+    public init(provider: ServiceProviderType) {
+        self.provider = provider
+    }
+
+    public enum Action {
         case viewWillAppear
     }
 
-    enum Mutation {
+    public enum Mutation {
+        case setIsUser(Bool)
         case setIsLoginFlow(Bool)
+        case setShowAlertServerErr(String?)
     }
 
-    struct State {
+    public struct State {
+        var isUser: Bool? = nil
         var isLoginFlow: Bool? = nil
+        var showAlertServerErrMessage: String? = nil
     }
 
-    func mutate(action: Action) -> Observable<Mutation> {
+    public func mutate(action: Action) -> Observable<Mutation> {
         switch action {
         case .viewWillAppear:
-            return .empty()
+            return refresh()
         }
     }
 
-    func reduce(state: State, mutation: Mutation) -> State {
+    public func reduce(state: State, mutation: Mutation) -> State {
         var newState = state
         switch mutation {
+        case let .setIsUser(isUser):
+            newState.isUser = isUser
         case let .setIsLoginFlow(isLoginFlow):
             newState.isLoginFlow = isLoginFlow
+        case let .setShowAlertServerErr(errMessage):
+            newState.showAlertServerErrMessage = errMessage
         }
         return newState
     }
+}
+
+extension SplashReactor {
+    public func transform(mutation: Observable<Mutation>) -> Observable<Mutation> {
+        let serviceMutation = provider.authRepository.event.flatMap { event -> Observable<Mutation> in
+            switch event {
+
+            case let .updateAccessToken(accessToken):
+                Keychain.shared.setAccessToken(accessToken: accessToken)
+                return .just(.setIsUser(true))
+
+            case let .updateRefreshToken(refreshtoken):
+                Keychain.shared.setRefreshToken(refreshToken: refreshtoken)
+                return .empty()
+
+            case let .sendError(errorModel):
+                guard let errorModel = errorModel,
+                      let status = errorModel.status else { return .empty() }
+
+                if 400..<500 ~= status {
+                    return .just(.setIsLoginFlow(true))
+                }
+                return .just(.setShowAlertServerErr(errorModel.message))
+            }
+        }
+        return Observable.merge(mutation, serviceMutation)
+    }
+}
+
+extension SplashReactor {
+  private func refresh() -> Observable<Mutation> {
+    let accessToken = Keychain.shared.getAccessToken() ?? ""
+    let refreshToken = Keychain.shared.getRefreshToken() ?? ""
+
+    provider.authRepository.refresh(accessToken, refreshToken)
+
+    return .empty()
+  }
 }

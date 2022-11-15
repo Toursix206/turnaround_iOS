@@ -13,9 +13,9 @@ import Then
 
 import ReactorKit
 
-final class SplashViewController: UIViewController, ReactorKit.View {
-    typealias Reactor = SplashReactor
-    var disposeBag: DisposeBag = DisposeBag()
+public final class SplashViewController: UIViewController, ReactorKit.View {
+    public typealias Reactor = SplashReactor
+    public var disposeBag: DisposeBag = DisposeBag()
 
     private let titleLabel = UILabel().then {
         $0.textColor = UIColor.white
@@ -24,23 +24,67 @@ final class SplashViewController: UIViewController, ReactorKit.View {
         $0.numberOfLines = 2
     }
 
-    override func viewDidLoad() {
-        super.viewDidLoad()
+    public init(_ reactor: Reactor) {
+        super.init(nibName: nil, bundle: nil)
         render()
+        self.reactor = reactor
+    }
+
+    required init?(coder: NSCoder) {
+      fatalError("init(coder:) has not been implemented")
+    }
+
+    public override func viewDidLoad() {
+        super.viewDidLoad()
     }
 
     private func render() {
+        view.backgroundColor = .darkGray
         view.addSubview(titleLabel)
         titleLabel.snp.makeConstraints { make in
             make.center.equalToSuperview()
         }
     }
+}
 
-    func bind(reactor: Reactor) {
+extension SplashViewController {
+    public func bind(reactor: Reactor) {
+        bindAction(reactor)
+        bindState(reactor)
+    }
+
+    func bindAction(_ reactor: Reactor) {
         rx.viewWillAppear
             .delay(.seconds(3), scheduler: MainScheduler.instance)
             .map { _ in Reactor.Action.viewWillAppear }
             .bind(to: reactor.action)
             .disposed(by: disposeBag)
+    }
+
+    func bindState(_ reactor: Reactor) {
+
+        reactor.state.map { $0.isUser }
+            .compactMap { $0 }
+            .distinctUntilChanged()
+            .asDriver(onErrorJustReturn: false)
+            .drive(onNext: self.transferToTabBar)
+            .disposed(by: disposeBag)
+
+        reactor.state.map { $0.isLoginFlow }
+            .compactMap { $0 }
+            .distinctUntilChanged()
+            .asDriver(onErrorJustReturn: false)
+            .drive(onNext: self.transferToOnboarding)
+            .disposed(by: disposeBag)
+    }
+}
+
+extension SplashViewController {
+    private func transferToTabBar(_ isUser: Bool) {
+        print("🐣🐣🐣🐣🐣🐣🐣🐣🐣🐣🐣🐣🐣🐣🐣🐣🐣🐣🐣🐣isUser = \(isUser) 오예오예오예")
+    }
+
+    private func transferToOnboarding(_ isLoginFlow: Bool) {
+        print("🐣🐣🐣🐣🐣🐣🐣🐣🐣🐣🐣🐣🐣🐣🐣🐣🐣🐣🐣🐣isLoginFlow = \(isLoginFlow) 오예오예오예")
     }
 }

@@ -72,53 +72,6 @@ public class IntroViewController: UIViewController, View {
     
     public func bind(reactor: IntroReactor) {
         
-        self.rx.viewDidLoad
-            .map { Reactor.Action.isKakaoAvailable }
-            .bind(to: reactor.action)
-            .disposed(by: disposeBag)
-        
-        self.introView.signInWithKakakoButton.rx.tap
-            .map{ Reactor.Action.tappedKakaoSignUp }
-            .bind(to: reactor.action)
-            .disposed(by: disposeBag)
-        
-        reactor.state
-            .map { $0.authState }
-            .distinctUntilChanged()
-            .filter { $0 == AuthState.authenticated }
-            .subscribe(onNext: { [weak self] authState in
-                print("AuthState is \(authState)")
-                switch authState {
-                case .authenticated:
-                    // 서버로 FCM토큰, authType, accessToekn 넘겨주기
-                    print("WTF")
-                    
-                case .unAuthenticated:
-                    print("FATAL ERROR: THIS SHOULD BE NOT HAPPENNING")
-                }
-            })
-            .disposed(by: disposeBag)
-        
-        reactor.state
-            .map { $0.loginState }
-            .distinctUntilChanged()
-            .subscribe(onNext: { [weak self] loginState in
-                print("LoginState is \(loginState)")
-                switch loginState {
-                case .logout:
-                    print("ERROR: ALREADY LOGGED OUT")
-                    
-                case .unregistered:
-                    print("ERROR: NOT REGISTERED")
-                    
-                case .login:
-                    // 프로필 설정 뷰로 옮기기
-                    print("WTF")
-                }
-            })
-            .disposed(by: disposeBag)
-        
-        
     }
     
     func bindViews() {

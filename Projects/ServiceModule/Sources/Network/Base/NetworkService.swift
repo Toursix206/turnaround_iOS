@@ -13,5 +13,5 @@ final public class NetworkService {
 
   private init() { }
 
-  //public let authRepository = AuthAPI(isLogging: true)
+  public let authRepository = AuthAPI(isLogging: true)
 }
