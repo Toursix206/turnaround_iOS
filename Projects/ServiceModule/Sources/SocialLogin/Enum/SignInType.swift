@@ -8,11 +8,11 @@
 
 import Foundation
 
-enum SignInType: CustomStringConvertible {
+public enum SignInType: CustomStringConvertible {
     case Apple
     case Kakao
 
-    var description: String {
+    public var description: String {
 
         switch self {
         case .Apple: return "APPLE"

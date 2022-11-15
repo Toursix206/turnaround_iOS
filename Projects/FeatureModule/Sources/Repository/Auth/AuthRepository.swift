@@ -13,38 +13,59 @@ import RxCocoa
 
 
 public enum AuthRepositroyEvent {
-  case updateAccessToken(String)
-  case updateRefreshToken(String)
-  case sendError(ErrorModel?)
+    case updateAccessToken(String)
+    case updateRefreshToken(String)
+    case sendError(ErrorModel?)
 }
 
 public protocol AuthRepository {
-  var event: PublishSubject<AuthRepositroyEvent> { get }
+    var event: PublishSubject<AuthRepositroyEvent> { get }
 
-  //func login(_ dto: AuthDTO.Request.LoginRequestDTO)
-  func refresh(_ accessToken: String, _ refreshToken: String)
+    func login(_ dto: AuthDTO.Request.LoginRequestDTO)
+    func refresh(_ accessToken: String, _ refreshToken: String)
 }
+
 public final class AuthRepositoryImp: BaseProvider, AuthRepository {
-  public var event = PublishSubject<AuthRepositroyEvent>()
+    public var event = PublishSubject<AuthRepositroyEvent>()
 
-  public func refresh(_ accessToken: String, _ refreshToken: String) {
+    public func login(_ dto: AuthDTO.Request.LoginRequestDTO) {
 
-    let dto = Token(accessToken: accessToken, refreshToken: refreshToken)
+        NetworkService.shared.authRepository.login(dto) { [weak self] res, err in
+            guard let self = self else { return }
+            guard let data = res?.data else {
+                let errorModel = ErrorModel(
+                    success: res?.success,
+                    status: res?.status,
+                    message: res?.message
+                )
 
-    NetworkService.shared.authRepository.refresh(dto) { [weak self] res, err in
-      guard let self = self else { return }
-      guard let data = res?.data else {
-        let errorModel = ErrorModel(
-          success: res?.success,
-          status: res?.status,
-          message: res?.message
-        )
-        self.event.onNext(.sendError(errorModel))
-        return
-      }
+                self.event.onNext(.sendError(errorModel))
+                return
+            }
 
-      self.event.onNext(.updateAccessToken(data.token.accessToken))
-      self.event.onNext(.updateRefreshToken(data.token.refreshToken))
+            self.event.onNext(.updateAccessToken(data.token.accessToken))
+            self.event.onNext(.updateRefreshToken(data.token.refreshToken))
+        }
     }
-  }
+
+    public func refresh(_ accessToken: String, _ refreshToken: String) {
+
+        let dto = Token(accessToken: accessToken, refreshToken: refreshToken)
+
+        NetworkService.shared.authRepository.refresh(dto) { [weak self] res, err in
+            guard let self = self else { return }
+            guard let data = res?.data else {
+                let errorModel = ErrorModel(
+                    success: res?.success,
+                    status: res?.status,
+                    message: res?.message
+                )
+                self.event.onNext(.sendError(errorModel))
+                return
+            }
+
+            self.event.onNext(.updateAccessToken(data.token.accessToken))
+            self.event.onNext(.updateRefreshToken(data.token.refreshToken))
+        }
+    }
 }
