@@ -10,22 +10,38 @@ import Foundation
 
 protocol AuthAPIProtocol {
 
-  func refresh(
-    _ refreshRequestDTO: Token,
-    completion: @escaping (BaseResponseType<AuthDTO.Response.LoginResponseDTO>?, Error?) -> Void
-  )
+    func refresh(
+        _ refreshRequestDTO: Token,
+        completion: @escaping (BaseResponseType<AuthDTO.Response.LoginResponseDTO>?, Error?) -> Void
+    )
+
+    func login(
+        _ loginRequestDTO: AuthDTO.Request.LoginRequestDTO,
+        completion: @escaping (BaseResponseType<AuthDTO.Response.LoginResponseDTO>?, Error?) -> Void
+    )
 }
 
 public final class AuthAPI: APIRequestLoader<AuthService>, AuthAPIProtocol {
-  public func refresh(
-    _ refreshRequestDTO: Token,
-    completion: @escaping (BaseResponseType<AuthDTO.Response.LoginResponseDTO>?, Error?) -> Void) {
-    fetchData(
-      target: .refresh(refreshRequestDTO),
-      responseData: BaseResponseType<AuthDTO.Response.LoginResponseDTO>.self,
-      isWithInterceptor: false
-    ) { res, err in
-        completion(res, err)
-      }
-  }
+
+    public func refresh(
+        _ refreshRequestDTO: Token,
+        completion: @escaping (BaseResponseType<AuthDTO.Response.LoginResponseDTO>?, Error?) -> Void) {
+            fetchData(
+                target: .refresh(refreshRequestDTO),
+                responseData: BaseResponseType<AuthDTO.Response.LoginResponseDTO>.self,
+                isWithInterceptor: false
+            ) { res, err in
+                completion(res, err)
+            }
+        }
+
+    public func login(_ loginRequestDTO: AuthDTO.Request.LoginRequestDTO, completion: @escaping (BaseResponseType<AuthDTO.Response.LoginResponseDTO>?, Error?) -> Void) {
+        fetchData(
+            target: .login(loginRequestDTO),
+            responseData: BaseResponseType<AuthDTO.Response.LoginResponseDTO>.self,
+            isWithInterceptor: false
+        ) { res, err in
+            completion(res, err)
+        }
+    }
 }

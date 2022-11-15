@@ -10,32 +10,39 @@ import Foundation
 import Alamofire
 
 public enum AuthService {
-  case refresh(_ dto: Token)
+    case refresh(_ dto: Token)
+    case login(_ dto: AuthDTO.Request.LoginRequestDTO)
 }
 
 extension AuthService: TargetType {
-  public var baseURL: String {
-    return API.apiBaseURL
-  }
-
-  public var path: String {
-    switch self {
-    case .refresh:
-      return "auth/refresh"
+    public var baseURL: String {
+        return API.apiBaseURL
     }
-  }
 
-  public var method: HTTPMethod {
-    switch self {
-    case .refresh:
-      return .post
+    public var path: String {
+        switch self {
+        case .refresh:
+            return "auth/refresh"
+        case .login:
+            return "auth/login"
+        }
     }
-  }
 
-  public var parameters: RequestParams {
-    switch self {
-    case let .refresh(dto):
-      return .body(dto)
+    public var method: HTTPMethod {
+        switch self {
+        case .refresh:
+            return .post
+        case .login:
+            return .post
+        }
     }
-  }
+
+    public var parameters: RequestParams {
+        switch self {
+        case let .refresh(dto):
+            return .body(dto)
+        case let .login(dto):
+            return .body(dto)
+        }
+    }
 }

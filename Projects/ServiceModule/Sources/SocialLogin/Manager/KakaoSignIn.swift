@@ -12,72 +12,72 @@ import KakaoSDKCommon
 import KakaoSDKUser
 
 protocol KakaoOAuthable {
-  func configure(appKey: String)
+    func configure(appKey: String)
 }
 
 final public class KakaoOAuthManager: NSObject {
-  private var _onSuccess: Success?
-  private var _onFailure: Failure?
+    private var _onSuccess: Success?
+    private var _onFailure: Failure?
 }
 
 extension KakaoOAuthManager: KakaoOAuthable {
 
-  public func configure(appKey: String) {
-    KakaoSDK.initSDK(appKey: appKey)
-  }
+    public func configure(appKey: String) {
+        KakaoSDK.initSDK(appKey: appKey)
+    }
 }
 
 extension KakaoOAuthManager: OAuthable {
 
-  public func login() {
-    if (UserApi.isKakaoTalkLoginAvailable()) {
-      UserApi.shared.loginWithKakaoTalk { [weak self] (oauthToken, error) in
-        if let error = error {
-          debugPrint(error)
-          self?.onFailure?(error)
+    public func login() {
+        if (UserApi.isKakaoTalkLoginAvailable()) {
+            UserApi.shared.loginWithKakaoTalk { [weak self] (oauthToken, error) in
+                if let error = error {
+                    debugPrint(error)
+                    self?.onFailure?(error)
+                }
+
+                guard let oauthToken = oauthToken else {
+                    self?.onFailure?(NSError.init(domain: "Kakao Login Error", code: -1))
+                    debugPrint("Kakao Login Error")
+                    return
+                }
+                self?.onSuccess?(oauthToken.accessToken, nil)
+            }
+
+        } else {
+            UserApi.shared.loginWithKakaoAccount { [weak self] (oauthToken, error) in
+                if let error = error {
+                    self?.onFailure?(error)
+                }
+
+                guard let oauthToken = oauthToken else {
+                    self?.onFailure?(NSError.init(domain: "Kakao Login Error", code: -1))
+                    debugPrint("Kakao Login Error")
+                    return
+                }
+                self?.onSuccess?(oauthToken.accessToken, nil)
+            }
         }
 
-        guard let oauthToken = oauthToken else {
-          self?.onFailure?(NSError.init(domain: "Kakao Login Error", code: -1))
-          debugPrint("Kakao Login Error")
-          return
+    }
+    
+    public var onSuccess: ((String, String?) -> ())? {
+        get {
+            return _onSuccess
         }
-        self?.onSuccess?(oauthToken.accessToken, nil)
-      }
-
-    } else {
-      UserApi.shared.loginWithKakaoAccount { [weak self] (oauthToken, error) in
-        if let error = error {
-          self?.onFailure?(error)
+        set(value){
+            _onSuccess = value
         }
+    }
 
-        guard let oauthToken = oauthToken else {
-          self?.onFailure?(NSError.init(domain: "Kakao Login Error", code: -1))
-          debugPrint("Kakao Login Error")
-          return
+    public var onFailure: ((Error) -> ())? {
+        get {
+            return _onFailure
         }
-        self?.onSuccess?(oauthToken.accessToken, nil)
-      }
+        set(value) {
+            _onFailure = value
+        }
     }
-
-  }
-
-  public var onSuccess: ((String, String?) -> ())? {
-    get {
-      return _onSuccess
-    }
-    set(value){
-      _onSuccess = value
-    }
-  }
-
-  public var onFailure: ((Error) -> ())? {
-    get {
-      return _onFailure
-    }
-    set(value) {
-      _onFailure = value
-    }
-  }
 
 }
