@@ -18,6 +18,7 @@ final class ActivityStartView: UIView {
     }
     
     let imageView = UIImageView(image: FeatureModuleAsset.activityStart.image).then {
+        $0.makeRounded(cornerRadius: 16)
         $0.contentMode = .scaleAspectFill
     }
     

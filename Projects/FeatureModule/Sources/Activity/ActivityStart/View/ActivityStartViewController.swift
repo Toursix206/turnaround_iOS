@@ -36,7 +36,8 @@ public class ActivityStartViewController: UIViewController {
             .disposed(by: disposeBag)
         
         mainView.startButton.rx.tap
-            .asDriver().drive(onNext: {
+            .asDriver().drive(onNext: { [weak self] in
+                let nextViewController = ActivityStepViewController()
                 
             })
             .disposed(by: disposeBag)
