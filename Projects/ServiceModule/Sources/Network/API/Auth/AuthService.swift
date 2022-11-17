@@ -12,6 +12,7 @@ import Alamofire
 public enum AuthService {
     case refresh(_ dto: Token)
     case login(_ dto: AuthDTO.Request.LoginRequestDTO)
+    case signup(_ dto: AuthDTO.Request.SignupRequestDTO)
 }
 
 extension AuthService: TargetType {
@@ -25,6 +26,8 @@ extension AuthService: TargetType {
             return "auth/refresh"
         case .login:
             return "auth/login"
+        case .signup:
+            return "auth/signup"
         }
     }
 
@@ -34,6 +37,8 @@ extension AuthService: TargetType {
             return .post
         case .login:
             return .post
+        case .signup:
+            return .post
         }
     }
 
@@ -42,6 +47,8 @@ extension AuthService: TargetType {
         case let .refresh(dto):
             return .body(dto)
         case let .login(dto):
+            return .body(dto)
+        case let .signup(dto):
             return .body(dto)
         }
     }

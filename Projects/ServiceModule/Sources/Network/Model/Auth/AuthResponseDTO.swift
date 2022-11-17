@@ -9,14 +9,26 @@
 import Foundation
 
 public extension AuthDTO.Response {
-  struct LoginResponseDTO: Decodable {
 
-    public let token: Token
-    public let isJoiningRoom: Bool
+    struct LoginResponseDTO: Decodable {
 
-    enum CodingKeys: String, CodingKey {
-      case token
-      case isJoiningRoom
+        public let token: Token
+        public let isJoiningRoom: Bool
+
+        enum CodingKeys: String, CodingKey {
+            case token
+            case isJoiningRoom
+        }
     }
-  }
+
+    struct SignupResponseDTO: Decodable {
+
+        public let token: Token
+        public let userId: Int
+
+        enum CodingKeys: String, CodingKey {
+            case token
+            case userId
+        }
+    }
 }

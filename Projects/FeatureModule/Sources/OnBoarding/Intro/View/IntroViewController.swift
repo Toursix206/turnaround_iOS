@@ -168,7 +168,18 @@ extension IntroViewController {
     }
 
     private func transferToEnterInfo(_ isSuccess: Bool) {
-        let infoVC = FirstProfileSettingViewController()
+
+        guard let signinType = reactor?.currentState.signInType,
+              let oAuthToken = reactor?.currentState.oauthToken else { return }
+
+        let provider = ServiceProvider()
+
+        let reactor = FirstProfileSettingReactor(
+            provider: provider,
+            signinType: signinType,
+            oAuthToken: oAuthToken)
+
+        let infoVC = FirstProfileSettingViewController(reactor)
         infoVC.modalPresentationStyle = .fullScreen
         infoVC.modalTransitionStyle = .crossDissolve
         self.view.window?.rootViewController = infoVC

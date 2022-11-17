@@ -68,6 +68,9 @@ extension SplashReactor {
                 Keychain.shared.setRefreshToken(refreshToken: refreshtoken)
                 return .empty()
 
+            case .userId:
+                return .empty()
+
             case let .sendError(errorModel):
                 guard let errorModel = errorModel,
                       let status = errorModel.status else { return .empty() }

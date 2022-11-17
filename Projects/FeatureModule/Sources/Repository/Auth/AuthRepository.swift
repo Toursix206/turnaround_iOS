@@ -15,6 +15,7 @@ import RxCocoa
 public enum AuthRepositroyEvent {
     case updateAccessToken(String)
     case updateRefreshToken(String)
+    case userId(Int)
     case sendError(ErrorModel?)
 }
 
@@ -23,6 +24,7 @@ public protocol AuthRepository {
 
     func login(_ dto: AuthDTO.Request.LoginRequestDTO)
     func refresh(_ accessToken: String, _ refreshToken: String)
+    func signup(_ dto: AuthDTO.Request.SignupRequestDTO )
 }
 
 public final class AuthRepositoryImp: BaseProvider, AuthRepository {
@@ -66,6 +68,27 @@ public final class AuthRepositoryImp: BaseProvider, AuthRepository {
 
             self.event.onNext(.updateAccessToken(data.token.accessToken))
             self.event.onNext(.updateRefreshToken(data.token.refreshToken))
+        }
+    }
+
+    public func signup(_ dto: AuthDTO.Request.SignupRequestDTO) {
+
+        NetworkService.shared.authRepository.signup(dto) { [weak self] res, err in
+            guard let self = self else { return }
+            guard let data = res?.data else {
+                let errorModel = ErrorModel(
+                    success: res?.success,
+                    status: res?.status,
+                    message: res?.message
+                )
+
+                self.event.onNext(.sendError(errorModel))
+                return
+            }
+
+            self.event.onNext(.updateAccessToken(data.token.accessToken))
+            self.event.onNext(.updateRefreshToken(data.token.refreshToken))
+            self.event.onNext(.userId(data.userId))
         }
     }
 }

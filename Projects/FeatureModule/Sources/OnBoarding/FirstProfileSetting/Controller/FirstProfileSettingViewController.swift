@@ -11,6 +11,7 @@ import ReactorKit
 import RxGesture
 
 public final class FirstProfileSettingViewController: UIViewController, ReactorKit.View {
+    public typealias Reactor = FirstProfileSettingReactor
 
     public var disposeBag = DisposeBag()
     var mainView = FirstProfileSettingView()
@@ -20,21 +21,103 @@ public final class FirstProfileSettingViewController: UIViewController, ReactorK
         view = mainView
     }
 
+    init(_ reactor: Reactor) {
+      super.init(nibName: nil, bundle: nil)
+      self.reactor = reactor
+    }
+
+    required init?(coder: NSCoder) {
+      fatalError("init(coder:) has not been implemented")
+    }
+
     public override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         view.endEditing(true)
     }
 
     public override func viewDidLoad() {
         super.viewDidLoad()
-        reactor = FirstProfileSettingReactor()
     }
 
-    public func bind(reactor: FirstProfileSettingReactor) {
+    public func bind(reactor: Reactor) {
+        bindAction(reactor)
+        bindState(reactor)
+        bindCollectionView(reactor)
+        bindTextField()
+    }
+}
+
+extension FirstProfileSettingViewController {
+
+    private func bindAction(_ reactor: Reactor) {
 
         rx.viewWillAppear
           .map { _ in Reactor.Action.viewWillAppear }
           .bind(to: reactor.action)
           .disposed(by: disposeBag)
+
+        mainView.profileImageCollectionView.rx.itemSelected
+            .map { Reactor.Action.selectProfileImage($0.row) }
+            .bind(to: reactor.action)
+            .disposed(by: disposeBag)
+
+        mainView.nicknameTextfield.rx.text
+            .orEmpty
+            .distinctUntilChanged()
+            .map { Reactor.Action.enterNickname($0) }
+            .bind(to: reactor.action)
+            .disposed(by: disposeBag)
+
+        mainView.nicknameTextfield.checkNicknameButton.rx.tap
+            .map { Reactor.Action.didTapCheckNickname }
+            .bind(to: reactor.action)
+            .disposed(by: disposeBag)
+
+        mainView.signupButton.rx.tap
+            .map { Reactor.Action.didTapSignup }
+            .bind(to: reactor.action)
+            .disposed(by: disposeBag)
+    }
+
+    private func bindState(_ reactor: Reactor) {
+
+        reactor.state.map { $0.isSignupButtonValid }
+            .distinctUntilChanged()
+            .compactMap { $0 }
+            .asDriver(onErrorJustReturn: false)
+            .drive(mainView.signupButton.rx.isEnabled)
+            .disposed(by: disposeBag)
+
+        reactor.state.map { $0.isNicknameValid }
+            .distinctUntilChanged()
+            .compactMap { $0 }
+            .asDriver(onErrorJustReturn: false)
+            .drive(onNext: updateNicknameChecked)
+            .disposed(by: disposeBag)
+
+        reactor.state.map { $0.isCheckNickButtonHidden }
+            .distinctUntilChanged()
+            .compactMap { $0 }
+            .asDriver(onErrorJustReturn: false)
+            .drive(onNext: updateCheckButton)
+            .disposed(by: disposeBag)
+
+        reactor.state.map { $0.isErrorLabelHidden }
+            .distinctUntilChanged()
+            .compactMap { $0 }
+            .delay(.milliseconds(200), scheduler: MainScheduler.instance)
+            .asDriver(onErrorJustReturn: false)
+            .drive(mainView.errorMessageLabel.rx.isHidden)
+            .disposed(by: disposeBag)
+
+        reactor.state.map { $0.isSignupSuccess }
+            .distinctUntilChanged()
+            .compactMap { $0 }
+            .asDriver(onErrorJustReturn: false)
+            .drive(onNext: transferToTabBar)
+            .disposed(by: disposeBag)
+    }
+
+    private func bindCollectionView(_ reactor: Reactor) {
 
         reactor.state.map { $0.cellImages }
             .distinctUntilChanged()
@@ -46,5 +129,69 @@ public final class FirstProfileSettingViewController: UIViewController, ReactorK
                 return cell
             }
             .disposed(by: disposeBag)
+    }
+
+    private func bindTextField() {
+
+        mainView.nicknameTextfield.rx.controlEvent(.editingDidBegin)
+            .withUnretained(self)
+            .subscribe { owner, _ in
+
+                UIView.animate(withDuration: 0.5) {
+                    owner.mainView.guideLabel.alpha = 0
+                    owner.mainView.guideLabel.isHidden = true
+                }
+            }
+            .disposed(by: disposeBag)
+
+        mainView.nicknameTextfield.rx.controlEvent(.editingDidEnd)
+            .withUnretained(self)
+            .subscribe { owner, _ in
+                UIView.animate(withDuration: 0.5) {
+                    owner.mainView.guideLabel.isHidden = false
+                    owner.mainView.guideLabel.alpha = 1
+                }
+            }
+            .disposed(by: disposeBag)
+    }
+
+}
+
+extension FirstProfileSettingViewController {
+
+    private func updateNicknameChecked(_ isValid: Bool) {
+
+        if isValid {
+            mainView.errorMessageLabel.text = "인증완료"
+            mainView.errorMessageLabel.textColor = .blue
+        } else {
+            mainView.errorMessageLabel.text = "중복된 닉네임이 존재합니다."
+            mainView.errorMessageLabel.textColor = .red
+        }
+    }
+
+    private func updateCheckButton(_ isHidden: Bool) {
+
+        if isHidden {
+
+            UIView.animate(withDuration: 0.5) {
+                self.mainView.nicknameTextfield.checkView.alpha = 0
+                self.mainView.nicknameTextfield.checkView.isHidden = true
+            }
+
+        } else {
+
+            UIView.animate(withDuration: 0.5, animations: {
+                self.mainView.nicknameTextfield.checkView.isHidden = false
+            }) { _ in
+                UIView.animate(withDuration: 0.2) {
+                    self.mainView.nicknameTextfield.checkView.alpha = 1
+                }
+            }
+        }
+    }
+
+    private func transferToTabBar(_ isSuccess: Bool) {
+        print("🐣🐣🐣🐣🐣🐣🐣🐣🐣🐣🐣🐣🐣🐣🐣🐣🐣🐣🐣🐣isTabBarSuccess = \(isSuccess) 오예오예오예")
     }
 }

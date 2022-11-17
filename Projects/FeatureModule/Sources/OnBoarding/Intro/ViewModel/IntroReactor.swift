@@ -111,6 +111,9 @@ public class IntroReactor: Reactor {
                 Keychain.shared.setRefreshToken(refreshToken: refreshToken)
                 return .empty()
 
+            case .userId:
+                return .empty()
+
             case .sendError(let errorModel):
                 guard
                     let errorModel = errorModel,

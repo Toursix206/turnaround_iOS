@@ -16,9 +16,20 @@ class NicknameTextField: UITextField {
     var disposeBag = DisposeBag()
 
     var customRightView = UIView()
+
+    var stackView = UIStackView().then {
+        $0.alignment = .fill
+        $0.distribution = .fillProportionally
+        $0.axis = .horizontal
+        $0.spacing = 8
+    }
+
+    var cancelView = UIView()
     var cancelButton = UIButton().then {
         $0.setImage(FeatureModuleAsset.nicknameDelete.image, for: .normal)
     }
+
+    var checkView = UIView()
     var checkNicknameButton = UIButton().then {
         $0.setTitle("중복확인", for: .normal)
         $0.backgroundColor = .black
@@ -62,19 +73,34 @@ extension NicknameTextField {
     }
 
     private func render() {
-        customRightView.addSubViews([cancelButton, checkNicknameButton])
+        customRightView.addSubview(stackView)
+        stackView.addArrangedSubviews(cancelView, checkView)
+        cancelView.addSubview(cancelButton)
+        checkView.addSubview(checkNicknameButton)
         rightView = customRightView
 
+        stackView.snp.makeConstraints { make in
+            make.top.bottom.leading.equalToSuperview()
+            make.trailing.equalToSuperview().inset(16)
+            make.width.lessThanOrEqualTo(200)
+        }
+
+        cancelView.snp.makeConstraints { make in
+            make.width.equalTo(20)
+        }
+
+        checkView.snp.makeConstraints { make in
+            make.width.equalTo(72)
+        }
+
         cancelButton.snp.makeConstraints { make in
-            make.leading.equalToSuperview().offset(4)
             make.centerY.equalToSuperview()
+            make.trailing.equalToSuperview()
             make.size.equalTo(20)
         }
 
         checkNicknameButton.snp.makeConstraints { make in
-            make.trailing.equalToSuperview().inset(16)
-            make.leading.equalTo(cancelButton.snp.trailing).offset(8)
-            make.centerY.equalToSuperview()
+            make.edges.equalToSuperview()
             make.width.equalTo(72)
             make.height.equalTo(30)
         }

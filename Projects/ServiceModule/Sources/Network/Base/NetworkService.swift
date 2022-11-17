@@ -9,9 +9,10 @@
 import Foundation
 
 final public class NetworkService {
-  public static var shared = NetworkService()
+    public static var shared = NetworkService()
 
-  private init() { }
+    private init() { }
 
-  public let authRepository = AuthAPI(isLogging: true)
+    public let authRepository = AuthAPI(isLogging: true)
+    public let userRepository = UserAPI(isLogging: true)
 }

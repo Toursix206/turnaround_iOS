@@ -19,6 +19,10 @@ protocol AuthAPIProtocol {
         _ loginRequestDTO: AuthDTO.Request.LoginRequestDTO,
         completion: @escaping (BaseResponseType<AuthDTO.Response.LoginResponseDTO>?, Error?) -> Void
     )
+    func signup(
+        _ signupRequestDTO: AuthDTO.Request.SignupRequestDTO,
+        completion: @escaping (BaseResponseType<AuthDTO.Response.SignupResponseDTO>?, Error?) -> Void
+    )
 }
 
 public final class AuthAPI: APIRequestLoader<AuthService>, AuthAPIProtocol {
@@ -39,6 +43,17 @@ public final class AuthAPI: APIRequestLoader<AuthService>, AuthAPIProtocol {
         fetchData(
             target: .login(loginRequestDTO),
             responseData: BaseResponseType<AuthDTO.Response.LoginResponseDTO>.self,
+            isWithInterceptor: false
+        ) { res, err in
+            completion(res, err)
+        }
+    }
+
+    public func signup(_ signupRequestDTO: AuthDTO.Request.SignupRequestDTO, completion: @escaping (BaseResponseType<AuthDTO.Response.SignupResponseDTO>?, Error?) -> Void) {
+
+        fetchData(
+            target: .signup(signupRequestDTO),
+            responseData: BaseResponseType<AuthDTO.Response.SignupResponseDTO>.self,
             isWithInterceptor: false
         ) { res, err in
             completion(res, err)
