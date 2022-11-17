@@ -6,8 +6,6 @@
 //  Copyright © 2022 turnaround.io. All rights reserved.
 //
 
-// 애플로그인, 카카오로그인 버튼 바꾸기
-
 import Foundation
 import ReactorKit
 import ServiceModule

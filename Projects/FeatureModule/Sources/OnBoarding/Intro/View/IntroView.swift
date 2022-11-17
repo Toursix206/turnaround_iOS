@@ -54,14 +54,14 @@ class IntroView: UIView {
     
     var signInWithKakakoButton: UIButton = {
         var button = UIButton()
-        button.setImage(FeatureModuleAsset.signWithKakaoButton.image, for: .normal)
+        button.setImage(FeatureModuleAsset.kakaoButton.image, for: .normal)
         button.isHidden = true
         return button
     }()
 
     var signInWithAppleButton: UIButton = {
         var button = UIButton()
-        button.backgroundColor = .red
+        button.setImage(FeatureModuleAsset.appleButton.image, for: .normal)
         button.isHidden = true
         return button
     }()
