@@ -19,8 +19,15 @@ final class FirstProfileSettingView: UIView {
         static let itemSpacing = CGFloat(4)
         static let itemWidth = (screenWidth - sidePadding * 2 - itemSpacing * 2) / 3
         static let profileImageItemSize = CGSize(width: itemWidth, height: itemWidth)
-        static let textfieldHeight = (60/812) * screenHeight
-        static let buttonHeight = (56/812) * screenHeight
+        static let textfieldHeight = 60
+        static let buttonHeight = 56
+    }
+
+    let contentStackView = UIStackView().then {
+        $0.alignment = .fill
+        $0.distribution = .fillProportionally
+        $0.axis = .vertical
+        $0.spacing = 30
     }
 
     var guideLabel = UILabel().then {
@@ -53,8 +60,8 @@ final class FirstProfileSettingView: UIView {
     var nicknameTextfield = NicknameTextField()
 
     var errorMessageLabel = UILabel().then {
+        $0.isHidden = true
         $0.text = "중복된 닉네임이 존재합니다."
-        $0.textColor = .red
     }
 
     var signupButton = UIButton(configuration: UIButton.Configuration.filled()).then {
@@ -69,16 +76,18 @@ final class FirstProfileSettingView: UIView {
 
         $0.configurationUpdateHandler = { btn in
           switch btn.state {
-          case .normal:
+          case .disabled:
               btn.configuration?.baseBackgroundColor = .lightGray
               btn.configuration?.baseForegroundColor = .gray
-          case .highlighted:
+          case .normal:
               btn.configuration?.baseBackgroundColor = .black
               btn.configuration?.baseForegroundColor = .white
           default:
             break
           }
         }
+
+        $0.isEnabled = false
     }
 
     override init(frame: CGRect) {
@@ -100,17 +109,14 @@ extension FirstProfileSettingView {
     }
 
     private func render() {
-        addSubViews([guideLabel, inputStackView, signupButton])
+        addSubViews([contentStackView, signupButton])
+        contentStackView.addArrangedSubviews(guideLabel, inputStackView)
         inputStackView.addArrangedSubviews(profileView, nicknameView)
         profileView.addSubViews([profileLabel, profileImageCollectionView])
         nicknameView.addSubViews([nicknameLabel, nicknameTextfield, errorMessageLabel])
 
-        guideLabel.snp.makeConstraints { make in
+        contentStackView.snp.makeConstraints { make in
             make.top.equalTo(safeAreaLayoutGuide).offset(50)
-            make.leading.equalToSuperview().offset(Size.sidePadding)
-        }
-        inputStackView.snp.makeConstraints { make in
-            make.top.equalTo(guideLabel.snp.bottom).offset(30)
             make.leading.trailing.equalToSuperview().inset(Size.sidePadding)
         }
 
