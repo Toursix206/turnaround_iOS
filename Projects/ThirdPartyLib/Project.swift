@@ -30,7 +30,10 @@ let project = Project.makeModule(
         .SPM.RxDataSources,
         .SPM.RxAlamofire,
         .SPM.KakaoSDK,
-        .SPM.RxKakaoSDK
+        .SPM.RxKakaoSDK,
+        .SPM.FirebaseCrashlytics,
+        .SPM.FirebaseMessaging,
+        .SPM.FirebaseAnalytics
     ],
     resourceSynthesizers: .assets()
 )

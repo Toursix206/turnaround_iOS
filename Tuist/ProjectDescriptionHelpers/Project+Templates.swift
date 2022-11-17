@@ -18,11 +18,13 @@ public extension Project {
         dependencies: [TargetDependency] = [],
         sources: SourceFilesList = ["Sources/**"],
         resources: ResourceFileElements? = nil,
-        infoPlist: InfoPlist = .default,
+        infoPlist: InfoPlist = .extendingDefault(with: [
+            "UIBackgroundModes": .array(["fetch", "remote-notification"])
+        ]),
         resourceSynthesizers: ProjectDescription.ResourceSynthesizer
     ) -> Project {
         let settings: Settings = .settings(
-            base: [:],
+            base: ["OTHER_LDFLAGS" : "$(inherited) -all_load"],
             configurations: [
                 .debug(name: .debug),
                 .release(name: .release)
@@ -46,7 +48,7 @@ public extension Project {
             product: .unitTests,
             bundleId: "\(organizationName).\(name)Tests",
             deploymentTarget: deploymentTarget,
-            infoPlist: .default,
+            infoPlist: infoPlist,
             sources: ["Tests/**"],
             dependencies: [.target(name: name)]
         )
