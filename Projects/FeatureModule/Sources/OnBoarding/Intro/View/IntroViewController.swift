@@ -168,7 +168,10 @@ extension IntroViewController {
     }
 
     private func transferToEnterInfo(_ isSuccess: Bool) {
-        print("🐣🐣🐣🐣🐣🐣🐣🐣🐣🐣🐣🐣🐣🐣🐣🐣🐣🐣🐣🐣isEnterInfoSuccess = \(isSuccess) 오예오예오예")
+        let infoVC = FirstProfileSettingViewController()
+        infoVC.modalPresentationStyle = .fullScreen
+        infoVC.modalTransitionStyle = .crossDissolve
+        self.view.window?.rootViewController = infoVC
     }
 
     private func transferToTabBar(_ isSuccess: Bool) {
