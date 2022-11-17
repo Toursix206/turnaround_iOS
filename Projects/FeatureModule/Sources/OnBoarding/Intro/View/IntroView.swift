@@ -105,13 +105,13 @@ class IntroView: UIView {
         
         signInWithKakakoButton.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview().inset(22)
-            make.height.equalTo(52)
+            make.height.equalTo(56)
             make.top.equalTo(pageControl.snp.bottom).offset(24 * UIScreen.main.bounds.height / 896)
         }
 
         signInWithAppleButton.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview().inset(22)
-            make.height.equalTo(52)
+            make.height.equalTo(56)
             make.top.equalTo(signInWithKakakoButton.snp.bottom).offset(16)
         }
         

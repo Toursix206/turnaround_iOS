@@ -16,7 +16,7 @@ final class ProfileImageCollectionViewCell: UICollectionViewCell {
     override var isSelected: Bool {
         didSet {
             if isSelected {
-                contentView.backgroundColor = .purple
+                contentView.backgroundColor = UIColor(red: 144/255, green: 92/255, blue: 1, alpha: 0.3)
                 contentView.layer.borderColor = UIColor.black.cgColor
                 contentView.layer.borderWidth = 3
             } else {
