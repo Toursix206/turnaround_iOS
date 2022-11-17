@@ -62,6 +62,10 @@ let dependencies = Dependencies(
         .remote(
             url: "https://github.com/kakao/kakao-ios-sdk-rx",
             requirement: .branch("master")
+        ),
+        .package(
+            url: "https://github.com/firebase/firebase-ios-sdk",
+            .upToNextMajor(from: "8.10.0")
         )
     ],
     platforms: [.iOS]

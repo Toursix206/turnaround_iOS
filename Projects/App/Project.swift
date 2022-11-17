@@ -11,7 +11,7 @@ import ProjectDescriptionHelpers
 import MyPlugin
 
 let project = Project.makeModule(
-    name: "TurnAround-iOS",
+    name: "TurnAroundiOS",
     platform: .iOS,
     product: .app,
     dependencies: [
