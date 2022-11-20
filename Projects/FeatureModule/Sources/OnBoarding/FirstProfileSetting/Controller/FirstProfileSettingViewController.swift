@@ -22,12 +22,12 @@ public final class FirstProfileSettingViewController: UIViewController, ReactorK
     }
 
     init(_ reactor: Reactor) {
-      super.init(nibName: nil, bundle: nil)
-      self.reactor = reactor
+        super.init(nibName: nil, bundle: nil)
+        self.reactor = reactor
     }
 
     required init?(coder: NSCoder) {
-      fatalError("init(coder:) has not been implemented")
+        fatalError("init(coder:) has not been implemented")
     }
 
     public override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -51,9 +51,9 @@ extension FirstProfileSettingViewController {
     private func bindAction(_ reactor: Reactor) {
 
         rx.viewWillAppear
-          .map { _ in Reactor.Action.viewWillAppear }
-          .bind(to: reactor.action)
-          .disposed(by: disposeBag)
+            .map { _ in Reactor.Action.viewWillAppear }
+            .bind(to: reactor.action)
+            .disposed(by: disposeBag)
 
         mainView.profileImageCollectionView.rx.itemSelected
             .map { Reactor.Action.selectProfileImage($0.row) }
@@ -104,7 +104,6 @@ extension FirstProfileSettingViewController {
         reactor.state.map { $0.isErrorLabelHidden }
             .distinctUntilChanged()
             .compactMap { $0 }
-            .delay(.milliseconds(200), scheduler: MainScheduler.instance)
             .asDriver(onErrorJustReturn: false)
             .drive(mainView.errorMessageLabel.rx.isHidden)
             .disposed(by: disposeBag)
@@ -153,6 +152,8 @@ extension FirstProfileSettingViewController {
                 }
             }
             .disposed(by: disposeBag)
+
+        mainView.nicknameTextfield.delegate = self
     }
 
 }
@@ -193,5 +194,22 @@ extension FirstProfileSettingViewController {
 
     private func transferToTabBar(_ isSuccess: Bool) {
         print("🐣🐣🐣🐣🐣🐣🐣🐣🐣🐣🐣🐣🐣🐣🐣🐣🐣🐣🐣🐣isTabBarSuccess = \(isSuccess) 오예오예오예")
+    }
+}
+
+extension FirstProfileSettingViewController: UITextFieldDelegate {
+
+    public func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+
+        guard let text = textField.text,
+              let stringRange = Range(range, in: text) else {return false}
+
+        let changeText = text.replacingCharacters(in: stringRange, with: string)
+
+        return changeText.count <= 8
+    }
+
+    public func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        return true
     }
 }

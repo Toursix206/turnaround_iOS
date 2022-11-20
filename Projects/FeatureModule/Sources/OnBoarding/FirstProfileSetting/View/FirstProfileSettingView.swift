@@ -61,7 +61,7 @@ final class FirstProfileSettingView: UIView {
 
     var errorMessageLabel = UILabel().then {
         $0.isHidden = true
-        $0.text = "중복된 닉네임이 존재합니다."
+        $0.text = "."
     }
 
     var signupButton = UIButton(configuration: UIButton.Configuration.filled()).then {

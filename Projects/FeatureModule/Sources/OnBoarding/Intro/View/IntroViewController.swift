@@ -171,7 +171,8 @@ extension IntroViewController {
 
         guard let signinType = reactor?.currentState.signInType,
               let oAuthToken = reactor?.currentState.oauthToken else { return }
-
+        reactor?.action.onNext(.initial)
+        
         let provider = ServiceProvider()
 
         let reactor = FirstProfileSettingReactor(
@@ -186,6 +187,7 @@ extension IntroViewController {
     }
 
     private func transferToTabBar(_ isSuccess: Bool) {
+        reactor?.action.onNext(.initial)
         print("🐣🐣🐣🐣🐣🐣🐣🐣🐣🐣🐣🐣🐣🐣🐣🐣🐣🐣🐣🐣isTabBarSuccess = \(isSuccess) 오예오예오예")
     }
 }
