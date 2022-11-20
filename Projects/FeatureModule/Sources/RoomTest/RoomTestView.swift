@@ -43,17 +43,17 @@ class RoomTestView: UIView {
     var roomView = UIView()
 
     var emptyRoomImageView = UIImageView().then {
-        $0.image = FeatureModuleAsset.roomWithHole.image
+        $0.image = FeatureModuleAsset.ImageAsset.roomWithHole.image
     }
 
     var deskAndChairImageView = UIImageView().then {
-        $0.image = FeatureModuleAsset.deskAndChair.image
+        $0.image = FeatureModuleAsset.ImageAsset.deskAndChair.image
     }
     var bedImageView = UIImageView().then {
-        $0.image = FeatureModuleAsset.bed.image
+        $0.image = FeatureModuleAsset.ImageAsset.bed.image
     }
     var windowImageView = UIImageView().then {
-        $0.image = FeatureModuleAsset.transparentWindow.image
+        $0.image = FeatureModuleAsset.ImageAsset.transparentWindow.image
     }
 
     var deskAndChairTouchView = UIView()
@@ -68,7 +68,7 @@ class RoomTestView: UIView {
 
         [deskAndChairBrushButton, bedBrushButton, windowBrushButton].forEach {
             //$0.isHidden = true
-            $0.setImage(FeatureModuleAsset.brush.image, for: .normal)
+            $0.setImage(FeatureModuleAsset.ImageAsset.brush.image, for: .normal)
         }
     }
 

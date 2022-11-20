@@ -26,7 +26,7 @@ class NicknameTextField: UITextField {
 
     var cancelView = UIView()
     var cancelButton = UIButton().then {
-        $0.setImage(FeatureModuleAsset.nicknameDelete.image, for: .normal)
+        $0.setImage(FeatureModuleAsset.ImageAsset.nicknameDelete.image, for: .normal)
     }
 
     var checkView = UIView()
