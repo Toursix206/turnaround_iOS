@@ -42,26 +42,26 @@ class IntroView: UIView {
     
     var skipButton: UIButton = {
         var button = UIButton()
-        button.setImage(FeatureModuleAsset.skipButton.image, for: .normal)
+        button.setImage(FeatureModuleAsset.ImageAsset.skipButton.image, for: .normal)
         return button
     }()
     
     var nextButton: UIButton = {
         var button = UIButton()
-        button.setImage(FeatureModuleAsset.onBoardingButton.image, for: .normal)
+        button.setImage(FeatureModuleAsset.ImageAsset.onBoardingButton.image, for: .normal)
         return button
     }()
     
     var signInWithKakakoButton: UIButton = {
         var button = UIButton()
-        button.setImage(FeatureModuleAsset.kakaoButton.image, for: .normal)
+        button.setImage(FeatureModuleAsset.ImageAsset.kakaoButton.image, for: .normal)
         button.isHidden = true
         return button
     }()
 
     var signInWithAppleButton: UIButton = {
         var button = UIButton()
-        button.setImage(FeatureModuleAsset.appleButton.image, for: .normal)
+        button.setImage(FeatureModuleAsset.ImageAsset.appleButton.image, for: .normal)
         button.isHidden = true
         return button
     }()

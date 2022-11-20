@@ -14,8 +14,8 @@ public struct ProfileImageContent: Equatable {
 
 extension ProfileImageContent {
     static var data: [ProfileImageContent] = [
-        ProfileImageContent(image: FeatureModuleAsset.memoji.image),
-        ProfileImageContent(image: FeatureModuleAsset.memoji2.image),
-        ProfileImageContent(image: FeatureModuleAsset.memoji3.image)
+        ProfileImageContent(image: FeatureModuleAsset.ImageAsset.memoji.image),
+        ProfileImageContent(image: FeatureModuleAsset.ImageAsset.memoji2.image),
+        ProfileImageContent(image: FeatureModuleAsset.ImageAsset.memoji3.image)
     ]
 }
