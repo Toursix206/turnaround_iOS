@@ -82,9 +82,12 @@ extension SplashViewController {
 extension SplashViewController {
     private func transferToTabBar(_ isUser: Bool) {
         print("🐣🐣🐣🐣🐣🐣🐣🐣🐣🐣🐣🐣🐣🐣🐣🐣🐣🐣🐣🐣isUser = \(isUser) 오예오예오예")
+        reactor?.action.onNext(.initial)
     }
 
     private func transferToOnboarding(_ isLoginFlow: Bool) {
+        reactor?.action.onNext(.initial)
+
         let serviceProvider = ServiceProvider()
         let reactor = IntroReactor(provider: serviceProvider)
         let vc = IntroViewController(reactor)

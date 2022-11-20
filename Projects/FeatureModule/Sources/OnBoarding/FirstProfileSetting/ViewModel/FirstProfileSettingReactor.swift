@@ -66,17 +66,15 @@ public class FirstProfileSettingReactor: ReactorKit.Reactor {
 
         case .selectProfileImage(let num):
             let profileType = stringImageNum(num)
-            let nickname = currentState.nickname ?? ""
+            let isNicknameValid = currentState.isNicknameValid ?? false
             return .concat([
                 .just(Mutation.setSelectedProfileImage(profileType)),
-                isSignupButtonValid(profileType, nickname)
+                isSignupButtonValid(profileType, isNicknameValid)
             ])
 
         case .enterNickname(let nickname):
-            let profileType = currentState.profileType ?? ""
             return .concat([
                 .just(Mutation.setNickname(nickname)),
-                isSignupButtonValid(profileType, nickname),
                 isTextTyping()
             ])
 
@@ -85,9 +83,11 @@ public class FirstProfileSettingReactor: ReactorKit.Reactor {
             return .just(.setIsErrorLabelHidden(false))
 
         case let .nicknameStatusResult(isValid):
+            let profileType = currentState.profileType ?? ""
             return .concat([
                 .just(.setIsNicknameValid(isValid)),
-                .just(.setIsCheckNickButtonHidden(isValid))
+                .just(.setIsCheckNickButtonHidden(isValid)),
+                isSignupButtonValid(profileType, isValid),
             ])
 
         case .didTapSignup:
@@ -176,7 +176,6 @@ extension FirstProfileSettingReactor {
             if res.status == 200 {
                 self?.action.onNext(.nicknameStatusResult(true))
             } else if res.status == 409 {
-                print("무엇이 문제입니까")
                 self?.action.onNext(.nicknameStatusResult(false))
             }
         }
@@ -215,18 +214,21 @@ extension FirstProfileSettingReactor {
         return string
     }
 
-    private func isSignupButtonValid(_ profileType: String, _ nickname: String) -> Observable<Mutation> {
-        let validation = profileType != "" && nickname.count > 0
+    private func isSignupButtonValid(_ profileType: String, _ isNicknameValid: Bool) -> Observable<Mutation> {
+        let validation = profileType != "" && isNicknameValid
         return .just(Mutation.setSignupButtonValid(validation))
     }
 
     private func isTextTyping() -> Observable<Mutation> {
+        let disableButton = Observable.just(Mutation.setSignupButtonValid(false))
         if currentState.isErrorLabelHidden == false {
             return .concat([
+                disableButton,
                 .just(Mutation.setIsErrorLabelHidden(true)),
-                .just(Mutation.setIsCheckNickButtonHidden(false))
+                .just(Mutation.setIsCheckNickButtonHidden(false)),
+                .just(Mutation.setIsNicknameValid(false))
             ])
         }
-        return .empty()
+        return disableButton
     }
 }

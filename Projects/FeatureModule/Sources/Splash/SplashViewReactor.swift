@@ -20,12 +20,14 @@ public final class SplashReactor: Reactor {
 
     public enum Action {
         case viewWillAppear
+        case initial
     }
 
     public enum Mutation {
         case setIsUser(Bool)
         case setIsLoginFlow(Bool)
         case setShowAlertServerErr(String?)
+        case setInitial
     }
 
     public struct State {
@@ -38,6 +40,8 @@ public final class SplashReactor: Reactor {
         switch action {
         case .viewWillAppear:
             return refresh()
+        case .initial:
+          return .just(.setInitial)
         }
     }
 
@@ -50,6 +54,8 @@ public final class SplashReactor: Reactor {
             newState.isLoginFlow = isLoginFlow
         case let .setShowAlertServerErr(errMessage):
             newState.showAlertServerErrMessage = errMessage
+        case .setInitial:
+            newState = initialState
         }
         return newState
     }
@@ -62,6 +68,7 @@ extension SplashReactor {
 
             case let .updateAccessToken(accessToken):
                 Keychain.shared.setAccessToken(accessToken: accessToken)
+                print("얜또 왜이래 \(accessToken)")
                 return .just(.setIsUser(true))
 
             case let .updateRefreshToken(refreshtoken):

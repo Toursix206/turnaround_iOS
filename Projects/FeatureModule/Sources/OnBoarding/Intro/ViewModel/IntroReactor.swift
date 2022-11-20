@@ -101,6 +101,7 @@ public class IntroReactor: Reactor {
 
     public func transform(mutation: Observable<Mutation>) -> Observable<Mutation> {
         let serviceMutation = provider.authRepository.event.flatMap { event -> Observable<Mutation> in
+
             switch event {
 
             case .updateAccessToken(let accessToken):
