@@ -7,13 +7,18 @@
 
 import UIKit
 import ServiceModule
+import FeatureModule
 import Firebase
 import FirebaseMessaging
+import FeatureModule
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
+        // Override point for customization after application launch.
+        RxImagePickerDelegateProxy.register { RxImagePickerDelegateProxy(imagePicker: $0) }
+        AuthServiceManager.getKakaoAuthService().initialize()
 
         FirebaseApp.configure()
         registerRemoteNotification()
@@ -22,6 +27,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
         removeKeychainAtFirstLaunch()
         
+        // Override point for customization after application launch.
+        RxImagePickerDelegateProxy.register { RxImagePickerDelegateProxy(imagePicker: $0) }
+        AuthServiceManager.getKakaoAuthService().initialize()
         return true
     }
 
