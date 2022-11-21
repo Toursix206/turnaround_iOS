@@ -10,6 +10,7 @@ import ServiceModule
 import FeatureModule
 import Firebase
 import FirebaseMessaging
+import FeatureModule
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -26,6 +27,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
         removeKeychainAtFirstLaunch()
         
+        // Override point for customization after application launch.
+        RxImagePickerDelegateProxy.register { RxImagePickerDelegateProxy(imagePicker: $0) }
+        AuthServiceManager.getKakaoAuthService().initialize()
         return true
     }
 
