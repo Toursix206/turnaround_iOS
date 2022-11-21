@@ -17,8 +17,10 @@ enum Fonts {
     case subHeadLineSemiBold
     case body1Regular
     case body1SemiBold
+    case body1Bold
     case body2Regular
     case body2SemiBold
+    case body2Bold
     case captionRegular
     case captionSemiBold
 }
@@ -45,10 +47,14 @@ extension UIFont {
             return UIFont(font: FeatureModuleFontFamily.Pretendard.regular, size: 16)!
         case .body1SemiBold:
             return UIFont(font: FeatureModuleFontFamily.Pretendard.semiBold, size: 16)!
+        case .body1Bold:
+            return UIFont(font: FeatureModuleFontFamily.Pretendard.bold, size: 16)!
         case .body2Regular:
             return UIFont(font: FeatureModuleFontFamily.Pretendard.regular, size: 14)!
         case .body2SemiBold:
             return UIFont(font: FeatureModuleFontFamily.Pretendard.semiBold, size: 14)!
+        case .body2Bold:
+            return UIFont(font: FeatureModuleFontFamily.Pretendard.bold, size: 14)!
         case .captionRegular:
             return UIFont(font: FeatureModuleFontFamily.Pretendard.regular, size: 12)!
         case .captionSemiBold:
