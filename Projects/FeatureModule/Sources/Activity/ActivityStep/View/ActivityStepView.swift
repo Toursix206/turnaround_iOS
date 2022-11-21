@@ -121,7 +121,7 @@ final class ActivityStepView: UIView {
         completeButton.snp.makeConstraints {
             $0.leading.equalToSuperview().offset(22)
             $0.trailing.equalToSuperview().offset(-22)
-            $0.top.equalTo(imageView.snp.bottom).offset(40)
+            $0.bottom.equalTo(safeAreaLayoutGuide.snp.bottom).offset(-20)
             $0.height.equalTo(56)
         }
     }
