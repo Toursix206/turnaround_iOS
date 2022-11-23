@@ -67,7 +67,7 @@ public class LongButton: UIButton {
         fatalError("init(coder:) has not been implemented")
     }
     
-    open func configUI() {
+    func configUI() {
         cornerRadius = 14.0
         fillColor = FeatureModuleAsset.ColorAsset.gray10.color
         disabledColor = FeatureModuleAsset.ColorAsset.gray4.color
