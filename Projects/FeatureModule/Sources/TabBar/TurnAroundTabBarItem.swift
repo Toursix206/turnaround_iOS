@@ -21,7 +21,7 @@ extension TurnAroundTabBarItem {
         case .home:
             return UINavigationController(rootViewController: FirstViewController())
         case .bangtaverse:
-            return UINavigationController(rootViewController: SecondViewController())
+            return UINavigationController(rootViewController: BangtaverseMainViewController())
         case .activity:
             return UINavigationController(rootViewController: ThirdViewController())
         case .mypage:

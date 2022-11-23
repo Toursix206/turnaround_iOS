@@ -23,7 +23,5 @@ extension UIView {
             // cornerRadius 가 nil 일 경우의 default
             self.layer.cornerRadius = self.layer.frame.height / 2
         }
-
-        self.layer.masksToBounds = true
     }
 }

@@ -1,8 +1,8 @@
 //
-//  RoomTestView.swift
+//  Bangtaverse.swift
 //  FeatureModule
 //
-//  Created by 김지현 on 2022/10/24.
+//  Created by 김지현 on 2022/11/23.
 //  Copyright © 2022 turnaround.io. All rights reserved.
 //
 
@@ -10,7 +10,11 @@ import UIKit
 import SnapKit
 import Then
 
-class RoomTestView: UIView {
+enum DirtyLevel {
+    case clean, dirty
+}
+
+class Bangtaverse: UIView {
 
     //var dirtyLevel: DirtyLevel = .dirty
 
@@ -24,10 +28,9 @@ class RoomTestView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
 
-    var roomView = UIView()
-
     var shadowView = UIImageView().then {
         $0.image = FeatureModuleAsset.ImageAsset.roomBackgroundShadow.image
+        $0.contentMode = .center
     }
     var emptyRoomImageView = UIImageView().then {
         $0.image = FeatureModuleAsset.ImageAsset.roomWithHole.image
@@ -61,18 +64,11 @@ class RoomTestView: UIView {
 
     private func render() {
 
-        addSubview(roomView)
         [shadowView, emptyRoomImageView,
          bedImageView, deskAndChairImageView, windowImageView,
         bedTouchView, deskAndChairTouchView, windowTouchView,
         bedBrushButton, deskAndChairBrushButton, windowBrushButton
-        ].forEach { roomView.addSubview($0) }
-
-        roomView.snp.makeConstraints { make in
-            make.leading.trailing.equalToSuperview()
-            make.height.equalTo(roomView.snp.width)
-            make.center.equalToSuperview()
-        }
+        ].forEach { addSubview($0) }
 
         shadowView.snp.makeConstraints { make in
             make.edges.equalToSuperview()
