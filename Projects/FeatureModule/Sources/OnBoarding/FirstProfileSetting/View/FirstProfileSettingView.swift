@@ -31,7 +31,7 @@ final class FirstProfileSettingView: UIView {
     }
 
     var guideLabel = UILabel().then {
-        $0.font = UIFont(font: UIFont.customFont(.H2Bold))
+        $0.font = UIFont.customFont(.H2Bold)
         $0.text = "프로필과 닉네임을\n설정해주세요!"
         $0.numberOfLines = 2
         $0.lineBreakMode = .byWordWrapping

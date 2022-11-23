@@ -76,13 +76,13 @@ final public class ActivityStepReactor: Reactor {
         var image: UIImage {
             switch currentStep {
             case .one:
-                return FeatureModuleAsset.step1Image.image
+                return FeatureModuleAsset.ImageAsset.step1Image.image
             case .two:
-                return FeatureModuleAsset.step2Image.image
+                return FeatureModuleAsset.ImageAsset.step2Image.image
             case .three:
-                return FeatureModuleAsset.step3Image.image
+                return FeatureModuleAsset.ImageAsset.step3Image.image
             case .four:
-                return FeatureModuleAsset.step4Image.image
+                return FeatureModuleAsset.ImageAsset.step4Image.image
             }
         }
         

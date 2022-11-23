@@ -81,9 +81,9 @@ public final class ActivityReviewViewController: UIViewController, View {
                 for index in 0...5 {
                     if let starImage = self?.mainView.viewWithTag(index) as? UIImageView {
                         if index <= $0 {
-                            starImage.image = FeatureModuleAsset.starOn.image
+                            starImage.image = FeatureModuleAsset.ImageAsset.starOn.image
                         } else {
-                            starImage.image = FeatureModuleAsset.star.image
+                            starImage.image = FeatureModuleAsset.ImageAsset.star.image
                         }
                     }
                 }

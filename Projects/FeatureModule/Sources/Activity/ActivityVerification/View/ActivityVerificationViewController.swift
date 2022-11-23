@@ -14,12 +14,10 @@ public class ActivityVerificationViewController: UIViewController, View {
     
     let mainView = ActivityVerificationView()
     
-    lazy var imagePickerView = {
-        let picker = UIImagePickerController()
-        picker.allowsEditing = true
-        picker.sourceType = .camera
-        return picker
-    }()
+    lazy var imagePickerView = UIImagePickerController().then {
+        $0.allowsEditing = true
+        $0.sourceType = .camera
+    }
 
     public var disposeBag = DisposeBag()
     
@@ -56,10 +54,10 @@ public class ActivityVerificationViewController: UIViewController, View {
             .bind(to: reactor.action)
             .disposed(by: disposeBag)
         
-        imagePickerView.rx.didFinishPickingMediaWithInfo
-            .map { Reactor.Action.takePhoto($0[.editedImage] as? UIImage) }
-            .bind(to: reactor.action)
-            .disposed(by: disposeBag)
+//        imagePickerView.rx.didFinishPickingMediaWithInfo
+//            .map { Reactor.Action.takePhoto($0[.editedImage] as? UIImage) }
+//            .bind(to: reactor.action)
+//            .disposed(by: disposeBag)
     }
     
     private func bindState(reactor: ActivityVerificationReactor) {
