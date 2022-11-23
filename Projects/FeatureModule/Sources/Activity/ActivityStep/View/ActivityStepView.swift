@@ -14,7 +14,7 @@ final class ActivityStepView: UIView {
     // MARK: - UI Components
     
     let exitButton = UIButton(type: .custom).then {
-        $0.setBackgroundImage(FeatureModuleAsset.exitButton.image, for: .normal)
+        $0.setBackgroundImage(FeatureModuleAsset.ImageAsset.exitButton.image, for: .normal)
     }
     
     let stepLabel = UIButton(type: .custom).then {
@@ -46,7 +46,7 @@ final class ActivityStepView: UIView {
     }
     
     let stepIndicatorLabel = UILabel().then {
-        $0.font = UIFont(font: FeatureModuleFontFamily.Pretendard.regular, size: 14)?.withSize(14)
+        $0.font = UIFont.customFont(.body2Regular)
     }
     
     let imageView = UIImageView().then {

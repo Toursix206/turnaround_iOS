@@ -31,7 +31,7 @@ final class FirstProfileSettingView: UIView {
     }
 
     var guideLabel = UILabel().then {
-        $0.font = UIFont(font: FeatureModuleFontFamily.Pretendard.bold, size: 20)
+        $0.font = UIFont(font: UIFont.customFont(.H2Bold))
         $0.text = "프로필과 닉네임을\n설정해주세요!"
         $0.numberOfLines = 2
         $0.lineBreakMode = .byWordWrapping
@@ -67,7 +67,7 @@ final class FirstProfileSettingView: UIView {
     var signupButton = UIButton(configuration: UIButton.Configuration.filled()).then {
         $0.makeRounded(cornerRadius: 14)
         let titleAttr: [NSAttributedString.Key: Any] = [
-            .font: UIFont(font: FeatureModuleFontFamily.Pretendard.semiBold, size: 16)!
+            .font: UIFont.customFont(.body1SemiBold)
         ]
         $0.configuration?.attributedTitle = AttributedString(
           "가입하기",
@@ -104,7 +104,7 @@ final class FirstProfileSettingView: UIView {
 extension FirstProfileSettingView {
     private func setup() {
         [profileLabel, nicknameLabel, errorMessageLabel].forEach {
-            $0.font = UIFont(font: FeatureModuleFontFamily.Pretendard.regular, size: 16)
+            $0.font = UIFont.customFont(.body1Regular)
         }
     }
 

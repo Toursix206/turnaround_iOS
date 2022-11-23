@@ -12,7 +12,7 @@ import RxGesture
 public final class ActivityReviewView: UIView {
     
     let backButton = UIButton(type: .custom).then {
-        $0.setImage(FeatureModuleAsset.backButton.image, for: .normal)
+        $0.setImage(FeatureModuleAsset.ImageAsset.backButton.image, for: .normal)
     }
     
     private let navigationTitleLabel = UILabel().then {
@@ -58,19 +58,19 @@ public final class ActivityReviewView: UIView {
     }
     
     let ratingStarStack = UIStackView(arrangedSubviews: [
-        UIImageView(image: FeatureModuleAsset.star.image).then {
+        UIImageView(image: FeatureModuleAsset.ImageAsset.star.image).then {
             $0.tag = 1
         },
-        UIImageView(image: FeatureModuleAsset.star.image).then {
+        UIImageView(image: FeatureModuleAsset.ImageAsset.star.image).then {
             $0.tag = 2
         },
-        UIImageView(image: FeatureModuleAsset.star.image).then {
+        UIImageView(image: FeatureModuleAsset.ImageAsset.star.image).then {
             $0.tag = 3
         },
-        UIImageView(image: FeatureModuleAsset.star.image).then {
+        UIImageView(image: FeatureModuleAsset.ImageAsset.star.image).then {
             $0.tag = 4
         },
-        UIImageView(image: FeatureModuleAsset.star.image).then {
+        UIImageView(image: FeatureModuleAsset.ImageAsset.star.image).then {
             $0.tag = 5
         }
     ]).then {

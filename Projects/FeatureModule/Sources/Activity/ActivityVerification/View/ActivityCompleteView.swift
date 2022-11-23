@@ -13,10 +13,10 @@ public class ActivityCompleteView: UIView {
     // MARK: - UI Components
     
     let exitButton = UIButton(type: .custom).then {
-        $0.setBackgroundImage(FeatureModuleAsset.exitButton.image, for: .normal)
+        $0.setBackgroundImage(FeatureModuleAsset.ImageAsset.exitButton.image, for: .normal)
     }
     
-    let imageView = UIImageView(image: FeatureModuleAsset.activityComplete.image).then {
+    let imageView = UIImageView(image: FeatureModuleAsset.ImageAsset.activityComplete.image).then {
         $0.contentMode = .scaleAspectFill
         $0.makeRounded(cornerRadius: 16)
     }

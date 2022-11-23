@@ -18,7 +18,7 @@ class IntroCollectionViewCell: UICollectionViewCell {
     
     var slideDescriptionLabel: UILabel = {
         var label = UILabel()
-        label.font = UIFont(font: FeatureModuleFontFamily.Pretendard.bold, size: 20)
+        label.font = UIFont.customFont(.H2Bold)
         label.numberOfLines = 0
         label.textColor = .label
         label.textAlignment = .center

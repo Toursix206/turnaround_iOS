@@ -34,7 +34,7 @@ class NicknameTextField: UITextField {
         $0.setTitle("중복확인", for: .normal)
         $0.backgroundColor = .black
         $0.setTitleColor(.white, for: .normal)
-        $0.titleLabel?.font = UIFont(font: FeatureModuleFontFamily.Pretendard.semiBold, size: 14)
+        $0.titleLabel?.font = UIFont.customFont(.body2SemiBold)
         $0.makeRounded(cornerRadius: 15)
     }
 
@@ -65,7 +65,7 @@ extension NicknameTextField {
     private func setup() {
         backgroundColor = .systemGray6
         makeRounded(cornerRadius: 8)
-        font = UIFont(font: FeatureModuleFontFamily.Pretendard.regular, size: 16)
+        font = UIFont.customFont(.body1Regular)
         placeholder = "턴어라운드"
         addLeftPadding(16)
         clearButtonMode = .whileEditing

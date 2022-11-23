@@ -14,10 +14,10 @@ final class ActivityStartView: UIView {
     // MARK: - UI Components
     
     let exitButton = UIButton(type: .custom).then {
-        $0.setImage(FeatureModuleAsset.exitButton.image, for: .normal)
+        $0.setImage(FeatureModuleAsset.ImageAsset.exitButton.image, for: .normal)
     }
     
-    let imageView = UIImageView(image: FeatureModuleAsset.activityStart.image).then {
+    let imageView = UIImageView(image: FeatureModuleAsset.ImageAsset.activityStart.image).then {
         $0.makeRounded(cornerRadius: 16)
         $0.contentMode = .scaleAspectFill
     }

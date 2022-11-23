@@ -46,7 +46,7 @@ final public class ActivityStepViewController: UIViewController, View {
     
     private func bindState(_ reactor: ActivityStepReactor) {
         reactor.state
-            .map { NSAttributedString(string: $0.stepLabelText, attributes: [.font: FeatureModuleFontFamily.Pretendard.semiBold.font(size: 14),
+            .map { NSAttributedString(string: $0.stepLabelText, attributes: [.font: UIFont.customFont(.body2SemiBold),
                                                                              .foregroundColor: UIColor.white])}
             .bind(to: mainView.stepLabel.rx.attributedTitle(for: .normal))
             .disposed(by: disposeBag)
@@ -77,7 +77,7 @@ final public class ActivityStepViewController: UIViewController, View {
             .disposed(by: disposeBag)
         
         reactor.state
-            .map { NSAttributedString(string: $0.buttonText, attributes: [.font: FeatureModuleFontFamily.Pretendard.semiBold.font(size: 16)])}
+            .map { NSAttributedString(string: $0.buttonText, attributes: [.font: UIFont.customFont(.body1SemiBold)])}
             .bind(to: mainView.completeButton.rx.attributedTitle(for: .normal))
             .disposed(by: disposeBag)
     }
