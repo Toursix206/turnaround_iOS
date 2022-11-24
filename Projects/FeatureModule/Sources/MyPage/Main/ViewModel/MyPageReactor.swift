@@ -12,9 +12,9 @@ import ReactorKit
 
 import RxDataSources
 
-public typealias MyPageTableViewSectionModel = SectionModel<Void, MyPageTableViewSection>
+typealias MyPageTableViewSectionModel = SectionModel<Void, MyPageTableViewSection>
 
-public enum MyPageTableViewSection {
+enum MyPageTableViewSection {
     case defaultCell(MyPageTableViewCellReactor)
 }
 
@@ -63,7 +63,7 @@ public class MyPageReactor: Reactor {
         return newState
     }
     
-    public static func configSections() -> [MyPageTableViewSectionModel] {
+    static func configSections() -> [MyPageTableViewSectionModel] {
         var sections: [MyPageTableViewSectionModel] = []
         
         var display: [[CellType]] = [
