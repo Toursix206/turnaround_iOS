@@ -22,7 +22,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         let serviceProvider = ServiceProvider()
         let reactor = SplashReactor(provider: serviceProvider)
 
-        window.rootViewController = MyPageViewController()
+        window.rootViewController = SplashViewController(reactor)
         window.backgroundColor = .white
         window.makeKeyAndVisible()
 

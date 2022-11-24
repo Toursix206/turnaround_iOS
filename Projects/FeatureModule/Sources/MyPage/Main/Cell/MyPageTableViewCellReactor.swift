@@ -9,11 +9,11 @@
 import UIKit
 import ReactorKit
 
-class MyPageTableViewCellReactor: Reactor {
+public class MyPageTableViewCellReactor: Reactor {
     
-    typealias Action = NoAction
+    public typealias Action = NoAction
     
-    var initialState: MyPageTableViewCellModel
+    public var initialState: MyPageTableViewCellModel
     
     init(state: MyPageTableViewCellModel) {
         self.initialState = state

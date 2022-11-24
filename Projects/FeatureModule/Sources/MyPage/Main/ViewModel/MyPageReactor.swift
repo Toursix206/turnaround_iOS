@@ -12,19 +12,19 @@ import ReactorKit
 
 import RxDataSources
 
-typealias MyPageTableViewSectionModel = SectionModel<Void, MyPageTableViewSection>
+public typealias MyPageTableViewSectionModel = SectionModel<Void, MyPageTableViewSection>
 
-enum MyPageTableViewSection {
+public enum MyPageTableViewSection {
     case defaultCell(MyPageTableViewCellReactor)
 }
 
 public class MyPageReactor: Reactor {
     
-    enum CellType {
+    public enum CellType {
         case defaultCell(String, UIImage)
     }
     
-    public var initialState: State
+    public var initialState = State()
     
     public enum Action {
         case cellSelected(IndexPath)
@@ -36,12 +36,12 @@ public class MyPageReactor: Reactor {
     
     public struct State {
         var selectedIndexPath: IndexPath?
-        var sections: [MyPageTableViewSectionModel]
+        var sections: [MyPageTableViewSectionModel]?
     }
     
-    init(initialState: State) {
-        self.initialState = State(sections: MyPageReactor.configSections())
-    }
+//    init(initialState: State) {
+//        self.initialState = State(sections: MyPageReactor.configSections())
+//    }
     
     public func mutate(action: Action) -> Observable<Mutation> {
         switch action {
@@ -63,7 +63,7 @@ public class MyPageReactor: Reactor {
         return newState
     }
     
-    static func configSections() -> [MyPageTableViewSectionModel] {
+    public static func configSections() -> [MyPageTableViewSectionModel] {
         var sections: [MyPageTableViewSectionModel] = []
         
         var display: [[CellType]] = [

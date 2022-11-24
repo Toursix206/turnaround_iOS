@@ -20,7 +20,7 @@ public class MyPageViewController: UIViewController, View {
     
     var mainView = MyPageView()
     
-    lazy var dataSource = RxTableViewSectionedReloadDataSource<MyPageTableViewSectionModel> { dataSource, tableView, indexPath, sectionItems in
+    lazy var dataSource = RxTableViewSectionedReloadDataSource<MyPageTableViewSectionModel> { _, tableView, indexPath, sectionItems in
         
         switch sectionItems {
         case .defaultCell(let reactor):
@@ -30,7 +30,7 @@ public class MyPageViewController: UIViewController, View {
         }
     }
     
-    init(_ reactor: Reactor) {
+    public init(_ reactor: Reactor) {
         super.init(nibName: nil, bundle: nil)
         self.reactor = reactor
     }
@@ -83,8 +83,9 @@ extension MyPageViewController {
             }
             .disposed(by: disposeBag)
         
-        reactor.state.map { $0.sections }.asObservable()
-            .bind(to: self.mainView.tableView.rx.items(dataSource: dataSource))
+        reactor.state.map { $0.sections }
+            .compactMap { $0 }
+            .bind(to:self.mainView.tableView.rx.items(dataSource: dataSource))
             .disposed(by: disposeBag)
     }
 }
