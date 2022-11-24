@@ -18,6 +18,7 @@ public extension Project {
         dependencies: [TargetDependency] = [],
         sources: SourceFilesList = ["Sources/**"],
         resources: ResourceFileElements? = nil,
+        entitlements: Path? = nil,
         infoPlist: InfoPlist = .extendingDefault(with: [
             "UIBackgroundModes": .array(["fetch", "remote-notification"])
         ]),
@@ -39,6 +40,7 @@ public extension Project {
             infoPlist: infoPlist,
             sources: sources,
             resources: resources,
+            entitlements: entitlements,
             dependencies: dependencies
         )
 

@@ -18,6 +18,7 @@ let project = Project.makeModule(
         .Project.FeatureModule
     ],
     resources: ["Resources/**"],
+    entitlements: Path("TurnAroundiOS.entitlements"),
     infoPlist: .file(path: "Support/Info.plist"),
     resourceSynthesizers: .assets()
 )
