@@ -53,19 +53,18 @@ public class StrokeButton: UIButton {
     
     override public init(frame: CGRect) {
         super.init(frame: frame)
-        configUI()
+        
+        defer {
+            self.cornerRadius = 14.0
+            self.borderColor = FeatureModuleAsset.ColorAsset.gray10.color
+            self.borderWidth = 1.0
+            self.filledColor = UIColor.white
+            self.titleText = ""
+            self.titleColor = FeatureModuleAsset.ColorAsset.gray10.color
+        }
     }
     
     required public init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
-    }
-    
-    func configUI() {
-        self.cornerRadius = 14.0
-        self.borderColor = FeatureModuleAsset.ColorAsset.gray10.color
-        self.borderWidth = 1.0
-        self.filledColor = UIColor.white
-        self.titleText = ""
-        self.titleColor = FeatureModuleAsset.ColorAsset.gray10.color
     }
 }
