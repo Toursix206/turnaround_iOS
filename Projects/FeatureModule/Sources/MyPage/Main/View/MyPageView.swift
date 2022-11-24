@@ -7,8 +7,14 @@
 //
 
 import UIKit
+import Then
 
 class MyPageView: UIView {
+    
+//    var navigationTitleLabel = UILabel().then {
+//        $0.font = UIFont.customFont(.body1SemiBold)
+//        $0.text = "마이페이지"
+//    }
     
     var userProfileView: UIView = {
         var view = UIView()
@@ -64,11 +70,9 @@ class MyPageView: UIView {
         return label
     }()
     
-    var tableView: UITableView = {
-       var tableView = UITableView()
-        
-        return tableView
-    }()
+    var tableView = UITableView().then {
+        $0.register(MyPageTableViewCell.self, forCellReuseIdentifier: MyPageTableViewCell.className)
+    }
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -84,5 +88,59 @@ class MyPageView: UIView {
         earningPointView.addSubViews([earningPointImageView, earningPointCountLabel, earningPointTitleLabel])
         
         addSubViews([userProfileView, earningPointView, tableView])
+        
+        userProfileView.snp.makeConstraints { make in
+            make.leading.equalToSuperview()
+            make.trailing.equalToSuperview()
+            make.top.equalTo(safeAreaLayoutGuide.snp.top)
+            make.height.equalTo(111)
+        }
+        
+        userProfileImageView.snp.makeConstraints { make in
+            make.width.height.equalTo(80)
+            make.centerY.equalToSuperview()
+            make.leading.equalToSuperview().offset(22)
+        }
+        
+        userProfileLabel.snp.makeConstraints { make in
+            make.top.equalToSuperview().offset(29)
+            make.leading.equalTo(userProfileImageView.snp.trailing).offset(8)
+            make.trailing.equalToSuperview()
+        }
+        
+        earningPointView.snp.makeConstraints { make in
+            make.top.equalTo(userProfileView.snp.bottom).offset(10)
+            make.height.equalTo(64)
+            make.leading.equalToSuperview()
+            make.trailing.equalToSuperview()
+        }
+        
+        earningPointImageView.snp.makeConstraints { make in
+            make.width.height.equalTo(24)
+            make.centerY.equalToSuperview()
+            make.leading.equalToSuperview().offset(22)
+            make.trailing.equalToSuperview().offset(329)
+        }
+        
+        earningPointTitleLabel.snp.makeConstraints { make in
+            make.centerY.equalToSuperview()
+            make.leading.equalTo(earningPointImageView.snp.trailing).offset(10)
+            make.trailing.equalTo(earningPointCountLabel.snp.leading)
+        }
+        
+        earningPointCountLabel.snp.makeConstraints { make in
+            make.centerY.equalToSuperview()
+            make.trailing.equalToSuperview().offset(-22)
+        }
+        
+        
+        tableView.snp.makeConstraints { make in
+            make.top.equalTo(earningPointView.snp.bottom).offset(10)
+            make.leading.trailing.equalToSuperview()
+            make.bottom.equalTo(safeAreaLayoutGuide.snp.bottom)
+        }
+        
+        
+        
     }
 }

@@ -6,16 +6,17 @@
 //  Copyright © 2022 turnaround.io. All rights reserved.
 //
 
+import UIKit
 import ReactorKit
 
 class MyPageTableViewCellReactor: Reactor {
     
     typealias Action = NoAction
     
-    let initialState: MyPageTableViewCellModel
+    var initialState: MyPageTableViewCellModel
     
-    init(myPageTableViewCellModel: MyPageTableViewCellModel) {
-        self.initialState = myPageTableViewCellModel
+    init(state: MyPageTableViewCellModel) {
+        self.initialState = state
     }
     
 }
