@@ -60,19 +60,18 @@ public class LongButton: UIButton {
     
     public override init(frame: CGRect) {
         super.init(frame: frame)
-        configUI()
+        
+        defer {
+            cornerRadius = 14.0
+            fillColor = FeatureModuleAsset.ColorAsset.gray10.color
+            disabledColor = FeatureModuleAsset.ColorAsset.gray4.color
+            titleColor = UIColor.white
+            disabledTitleColor = FeatureModuleAsset.ColorAsset.gray6.color
+            titleText = ""
+        }
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
-    }
-    
-    func configUI() {
-        cornerRadius = 14.0
-        fillColor = FeatureModuleAsset.ColorAsset.gray10.color
-        disabledColor = FeatureModuleAsset.ColorAsset.gray4.color
-        titleColor = UIColor.white
-        disabledTitleColor = FeatureModuleAsset.ColorAsset.gray6.color
-        titleText = ""
     }
 }
