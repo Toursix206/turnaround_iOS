@@ -12,7 +12,7 @@ import RxCocoa
 import ReactorKit
 import RxDataSources
 
-public class MyPageViewController: UIViewController, View {
+public class MyPageViewController: UIViewController, View, UIScrollViewDelegate {
     
     public typealias Reactor = MyPageReactor
     
@@ -20,15 +20,17 @@ public class MyPageViewController: UIViewController, View {
     
     var mainView = MyPageView()
     
-    lazy var dataSource = RxTableViewSectionedReloadDataSource<MyPageTableViewSectionModel> { _, tableView, indexPath, sectionItems in
-        
-        switch sectionItems {
-        case .defaultCell(let reactor):
-            guard let cell = self.mainView.tableView.dequeueReusableCell(withIdentifier: MyPageTableViewCell.className, for: indexPath) as? MyPageTableViewCell else { return UITableViewCell() }
-            cell.reactor = reactor
-            return cell
-        }
-    }
+    var tableViewItemObservable = Observable.of(MyPageTableViewCellModel.slideContents)
+    
+//    lazy var dataSource = RxTableViewSectionedReloadDataSource<MyPageTableViewSectionModel> { _, tableView, indexPath, sectionItems in
+//
+//        switch sectionItems {
+//        case .defaultCell(let reactor):
+//            guard let cell = self.mainView.tableView.dequeueReusableCell(withIdentifier: MyPageTableViewCell.className, for: indexPath) as? MyPageTableViewCell else { return UITableViewCell() }
+//            cell.reactor = reactor
+//            return cell
+//        }
+//    }
     
     public init(_ reactor: Reactor) {
         super.init(nibName: nil, bundle: nil)
@@ -47,8 +49,9 @@ public class MyPageViewController: UIViewController, View {
     public override func viewDidLoad() {
         super.viewDidLoad()
         
+        navigationController?.navigationBar.backgroundColor = .white
         navigationController?.navigationBar.titleTextAttributes = [
-            .foregroundColor: FeatureModuleAsset.ColorAsset.gray10,
+            .foregroundColor: FeatureModuleAsset.ColorAsset.gray10.color,
             .font: UIFont.customFont(.body1SemiBold)
         ]
         navigationItem.title = "마이페이지"
@@ -57,6 +60,7 @@ public class MyPageViewController: UIViewController, View {
     public func bind(reactor: MyPageReactor) {
         bindAction(reactor)
         bindState(reactor)
+        bindView()
     }
     
 }
@@ -75,17 +79,43 @@ extension MyPageViewController {
     private func bindState(_ reactor: Reactor) {
         reactor.state.map { $0.selectedIndexPath }
             .compactMap { $0 }
-            .subscribe { [weak self] indexPath in
+            .subscribe (onNext: { [weak self] indexPath in
                 guard let self = self else {
                     return
                 }
                 self.mainView.tableView.deselectRow(at: indexPath, animated: true)
+            })
+            .disposed(by: disposeBag)
+        
+//        reactor.state.map { $0.sections }
+//            .compactMap { $0 }
+//            .bind(to:self.mainView.tableView.rx.items(dataSource: dataSource))
+//            .disposed(by: disposeBag)
+    }
+    
+    private func bindView() {
+        
+        tableViewItemObservable
+            .bind(to: mainView.tableView.rx.items(cellIdentifier: MyPageTableViewCell.className, cellType: MyPageTableViewCell.self)) { indexPath, elements, cell in
+                cell.cellTitleLabel.text = elements.title
+                cell.iconView.image = elements.image
             }
             .disposed(by: disposeBag)
         
-        reactor.state.map { $0.sections }
-            .compactMap { $0 }
-            .bind(to:self.mainView.tableView.rx.items(dataSource: dataSource))
+        mainView.tableView.rx.setDelegate(self)
             .disposed(by: disposeBag)
+        
+//        slideObservable
+//            .bind(to: (introView.introCollectionView.rx.items(
+//                cellIdentifier: IntroCollectionViewCell.className,
+//                cellType: IntroCollectionViewCell.self))
+//            ){ indexPath, content, cell in
+//                cell.slideImageView.image = content.image
+//                cell.slideDescriptionLabel.text = content.description
+//            }
+//            .disposed(by: disposeBag)
+//
+//        introView.introCollectionView.rx.setDelegate(self)
+//            .disposed(by: disposeBag)
     }
 }

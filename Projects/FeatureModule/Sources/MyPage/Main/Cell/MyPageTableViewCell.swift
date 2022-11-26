@@ -31,6 +31,7 @@ class MyPageTableViewCell: UITableViewCell, ReactorKit.View {
     
     var cellTitleLabel: UILabel = {
         var label = UILabel()
+        label.backgroundColor = .clear
         label.font = UIFont.customFont(.body1Regular)
         return label
     }()
@@ -52,12 +53,17 @@ class MyPageTableViewCell: UITableViewCell, ReactorKit.View {
     
     func bind(reactor: MyPageTableViewCellReactor) {
         cellTitleLabel.text = reactor.currentState.title
-        iconView.image = reactor.currentState.icon
+        iconView.image = reactor.currentState.image
     }
     
     func render() {
         
         contentView.addSubViews([iconView, rightBracketImageVIew, cellTitleLabel])
+        
+        contentView.snp.makeConstraints { make in
+            make.edges.equalToSuperview()
+            make.height.equalTo(64)
+        }
         
         iconView.snp.makeConstraints { make in
             make.width.height.equalTo(24)

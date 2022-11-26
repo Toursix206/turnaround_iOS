@@ -75,7 +75,7 @@ public class MyPageReactor: Reactor {
             for item in cellSection {
                 switch item {
                 case let .defaultCell(title, image):
-                    let item: MyPageTableViewSection = .defaultCell(MyPageTableViewCellReactor(state: MyPageTableViewCellModel(icon: image, title: title)))
+                    let item: MyPageTableViewSection = .defaultCell(MyPageTableViewCellReactor(state: MyPageTableViewCellModel(title: title, image: image)))
                     section.append(item)
                 }
             }

@@ -34,9 +34,23 @@ class MyPageView: UIView {
     var userProfileImageView: UIImageView = {
         var imageView = UIImageView()
         imageView.backgroundColor = FeatureModuleAsset.ColorAsset.gray2.color
-        imageView.makeRounded(cornerRadius: 69.6)
+        // -MARK: 스택뷰로 프로필 사진 만들어야됨!
+        imageView.makeRounded(cornerRadius: 36.6)
+//        self.contentView.frame.width/2
         imageView.image = FeatureModuleAsset.ImageAsset.memoji2.image
         return imageView
+    }()
+    
+    var firstEmptyView: UIView = {
+        var view = UIView()
+        view.backgroundColor = FeatureModuleAsset.ColorAsset.gray2.color
+        return view
+    }()
+    
+    var secondEmptyView: UIView = {
+        var view = UIView()
+        view.backgroundColor = FeatureModuleAsset.ColorAsset.gray2.color
+        return view
     }()
     
     var earningPointView: UIView = {
@@ -70,12 +84,17 @@ class MyPageView: UIView {
         return label
     }()
     
-    var tableView = UITableView().then {
-        $0.register(MyPageTableViewCell.self, forCellReuseIdentifier: MyPageTableViewCell.className)
-    }
+    var tableView: UITableView = {
+       var tableView = UITableView()
+        tableView.backgroundColor = .clear
+        tableView.separatorStyle = .none
+        tableView.register(MyPageTableViewCell.self, forCellReuseIdentifier: MyPageTableViewCell.className)
+        return tableView
+    }()
     
     override init(frame: CGRect) {
         super.init(frame: frame)
+        backgroundColor = .white
         render()
     }
     
@@ -87,7 +106,7 @@ class MyPageView: UIView {
         userProfileView.addSubViews([userProfileLabel, userProfileImageView])
         earningPointView.addSubViews([earningPointImageView, earningPointCountLabel, earningPointTitleLabel])
         
-        addSubViews([userProfileView, earningPointView, tableView])
+        addSubViews([userProfileView, firstEmptyView, earningPointView, secondEmptyView, tableView])
         
         userProfileView.snp.makeConstraints { make in
             make.leading.equalToSuperview()
@@ -108,6 +127,14 @@ class MyPageView: UIView {
             make.trailing.equalToSuperview()
         }
         
+        firstEmptyView.snp.makeConstraints { make in
+            make.top.equalTo(userProfileView.snp.bottom)
+            make.leading.equalToSuperview()
+            make.trailing.equalToSuperview()
+            make.bottom.equalTo(earningPointView.snp.top)
+        }
+        
+        
         earningPointView.snp.makeConstraints { make in
             make.top.equalTo(userProfileView.snp.bottom).offset(10)
             make.height.equalTo(64)
@@ -119,7 +146,7 @@ class MyPageView: UIView {
             make.width.height.equalTo(24)
             make.centerY.equalToSuperview()
             make.leading.equalToSuperview().offset(22)
-            make.trailing.equalToSuperview().offset(329)
+//            make.trailing.equalToSuperview().offset(329)
         }
         
         earningPointTitleLabel.snp.makeConstraints { make in
@@ -131,6 +158,13 @@ class MyPageView: UIView {
         earningPointCountLabel.snp.makeConstraints { make in
             make.centerY.equalToSuperview()
             make.trailing.equalToSuperview().offset(-22)
+        }
+        
+        secondEmptyView.snp.makeConstraints { make in
+            make.top.equalTo(earningPointView.snp.bottom)
+            make.leading.equalToSuperview()
+            make.trailing.equalToSuperview()
+            make.bottom.equalTo(tableView.snp.top)
         }
         
         
