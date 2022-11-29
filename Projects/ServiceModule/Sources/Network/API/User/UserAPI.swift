@@ -9,19 +9,21 @@
 import Foundation
 
 protocol UserAPIProtocol {
-
+    
     func checkNickname(
         _ checkNicknameRequestDTO: UserDTO.Request.CheckNicnameRequestDTO,
         completion: @escaping (BaseResponseType<String>?, Error?) -> Void
     )
-
-
+    
+    func checkUserInfo(completion: @escaping (BaseResponseType<UserDTO.Response.CheckUserInfoResponseDTO>?, Error?) -> Void)
+    
+    
 }
 
 public final class UserAPI: APIRequestLoader<UserService>, UserAPIProtocol {
-
+    
     public func checkNickname(_ checkNicknameRequestDTO: UserDTO.Request.CheckNicnameRequestDTO, completion: @escaping (BaseResponseType<String>?, Error?) -> Void) {
-
+        
         fetchData(
             target: .checkNickname(checkNicknameRequestDTO),
             responseData: BaseResponseType<String>.self,
@@ -30,8 +32,18 @@ public final class UserAPI: APIRequestLoader<UserService>, UserAPIProtocol {
             completion(res, err)
         }
     }
-
-
-
-
+    
+    public func checkUserInfo(completion: @escaping (BaseResponseType<UserDTO.Response.CheckUserInfoResponseDTO>?, Error?) -> Void) {
+        fetchData(
+            target: .checkUserInfo,
+            responseData: BaseResponseType<UserDTO.Response.CheckUserInfoResponseDTO>.self,
+            isWithInterceptor: false
+        ) { response, error in
+            completion(response, error)
+        }
+    }
+    
+    
+    
+    
 }

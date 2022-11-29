@@ -25,7 +25,8 @@ extension TurnAroundTabBarItem {
         case .activity:
             return UINavigationController(rootViewController: ThirdViewController())
         case .mypage:
-            let reactor = MyPageReactor()
+            let provider = ServiceProvider()
+            let reactor = MyPageReactor(provider: provider)
             return UINavigationController(rootViewController: MyPageViewController(reactor))
         }
     }

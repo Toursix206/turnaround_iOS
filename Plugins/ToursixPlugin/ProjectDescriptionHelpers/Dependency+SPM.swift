@@ -28,6 +28,7 @@ public extension TargetDependency.SPM {
     static let RxAlamofire = TargetDependency.external(name: "RxAlamofire")
     static let KakaoSDK = TargetDependency.external(name: "KakaoSDK")
     static let RxKakaoSDK = TargetDependency.external(name: "RxKakaoSDK")
+    static let FirebaseCore = TargetDependency.external(name: "FirebaseCore")
     static let FirebaseCrashlytics = TargetDependency.external(name: "FirebaseCrashlytics")
     static let FirebaseMessaging = TargetDependency.external(name: "FirebaseMessaging")
     static let FirebaseAnalytics = TargetDependency.external(name: "FirebaseAnalytics")
