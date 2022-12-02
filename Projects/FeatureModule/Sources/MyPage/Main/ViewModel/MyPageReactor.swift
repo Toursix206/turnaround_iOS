@@ -33,22 +33,23 @@ public class MyPageReactor: Reactor {
     public var initialState = State()
     
     public enum Action {
-        case viewWillAppear
+        case viewWillAppear(String?, String?, Int?)
         case cellSelected(IndexPath)
     }
     
     public enum Mutation {
-        case setMyPageProfileView(MyPageProfileModel)
         case setNickname(String?)
         case setProfileImage(String?)
         case setPoint(Int?)
         case setSelectedIndexPath(IndexPath?)
+        case setError(String?)
     }
     
     public struct State {
         var nickname: String?
         var profileImage: String?
         var point: Int?
+        var error: String? = nil
         var selectedIndexPath: IndexPath?
         var sections: [MyPageTableViewSectionModel]?
     }
@@ -59,9 +60,13 @@ public class MyPageReactor: Reactor {
     
     public func mutate(action: Action) -> Observable<Mutation> {
         switch action {
-        case .viewWillAppear:
-            let profileType = stringImageNum(1)
-            return .concat([.just(Mutation.setNickname("asd"))])
+        case .viewWillAppear(let nickname, let profileImage, let point):
+            provider.userRepository.checkUserInfo()
+            return Observable.concat([
+                Observable.just(Mutation.setNickname(nickname)),
+                Observable.just(Mutation.setProfileImage(profileImage)),
+                Observable.just(Mutation.setPoint(point))
+            ])
                     
         case .cellSelected(let indexPath):
             return Observable.concat([
@@ -75,8 +80,6 @@ public class MyPageReactor: Reactor {
         var newState = state
         
         switch mutation {
-        case let .setMyPageProfileView(MyPageProfileModel):
-            newState.point = 123
             
         case let .setNickname(nickname):
             newState.nickname = nickname
@@ -87,10 +90,35 @@ public class MyPageReactor: Reactor {
         case let .setPoint(point):
             newState.point = point
             
+        case let .setError(error):
+            newState.error = error
+            
         case .setSelectedIndexPath(let indexPath):
             newState.selectedIndexPath = indexPath
         }
         return newState
+    }
+    
+    public func transform(mutation: Observable<Mutation>) -> Observable<Mutation> {
+        let serviceMutation = provider.userRepository.event.flatMap { event -> Observable<Mutation> in
+            switch event {
+            case .nickname(let nickname):
+                return .just(Mutation.setNickname(nickname))
+                
+            case .profileType(let profileType):
+                return .just(Mutation.setProfileImage(profileType))
+                
+            case .point(let point):
+                return .just(Mutation.setPoint(point))
+                
+            case .sendError(let errorModel):
+                guard let errorModel = errorModel else {
+                    return .empty()
+                }
+                return .just(.setError(errorModel.message))
+            }
+        }
+        return Observable.merge(mutation, serviceMutation)
     }
     
 //    static func configSections() -> [MyPageTableViewSectionModel] {
@@ -114,21 +142,6 @@ public class MyPageReactor: Reactor {
 //
 //        return sections
 //    }
-    
-    private func stringImageNum(_ num: Int) -> String {
-
-        var string = ""
-
-        if num == 1 {
-            string = "ONE"
-        } else if num == 2 {
-            string = "TWO"
-        } else {
-            string = "THREE"
-        }
-
-        return string
-    }
     
     
 }

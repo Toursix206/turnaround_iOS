@@ -68,6 +68,11 @@ public class MyPageViewController: UIViewController, View, UIScrollViewDelegate 
 extension MyPageViewController {
     private func bindAction(_ reactor: Reactor) {
         
+        self.rx.viewWillAppear
+            .map { _ in Reactor.Action.viewWillAppear(self.mainView.userProfileLabel.text, self.mainView.userProfileImageView.image?.description, Int(self.mainView.earningPointCountLabel.text!))}
+            .bind(to: reactor.action)
+            .disposed(by: disposeBag)
+        
         self.mainView.tableView.rx.itemSelected
             .map { Reactor.Action.cellSelected($0) }
             .bind(to: reactor.action)
@@ -85,6 +90,21 @@ extension MyPageViewController {
                 }
                 self.mainView.tableView.deselectRow(at: indexPath, animated: true)
             })
+            .disposed(by: disposeBag)
+        
+        reactor.state.map { $0.nickname }
+            .distinctUntilChanged()
+            .bind(to: mainView.userProfileLabel.rx.text)
+            .disposed(by: disposeBag)
+        
+//        reactor.state.map { $0.profileImage }
+//            .distinctUntilChanged()
+//            .bind()
+//            .disposed(by: disposeBag)
+        
+        reactor.state.map { "\(String(describing: $0.point))" }
+            .distinctUntilChanged()
+            .bind(to: mainView.earningPointCountLabel.rx.text)
             .disposed(by: disposeBag)
         
 //        reactor.state.map { $0.sections }
@@ -118,4 +138,19 @@ extension MyPageViewController {
 //        introView.introCollectionView.rx.setDelegate(self)
 //            .disposed(by: disposeBag)
     }
+    
+//    private func stringToImage(_ string: Int) -> String {
+//
+//        var string = ""
+//
+//        if num == 1 {
+//            string = "ONE"
+//        } else if num == 2 {
+//            string = "TWO"
+//        } else {
+//            string = "THREE"
+//        }
+//
+//        return string
+//    }
 }
