@@ -10,7 +10,7 @@ import UIKit
 import RxSwift
 import RxCocoa
 
-public class ActivityStartViewController: UIViewController {
+public final class ActivityStartViewController: UIViewController {
     
     let mainView = ActivityStartView()
     

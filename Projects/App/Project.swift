@@ -15,7 +15,10 @@ let project = Project.makeModule(
     platform: .iOS,
     product: .app,
     dependencies: [
-        .Project.FeatureModule
+        .Project.FeatureModule,
+        .SPM.FirebaseCrashlytics,
+        .SPM.FirebaseMessaging,
+        .SPM.FirebaseAnalytics
     ],
     resources: ["Resources/**"],
     entitlements: Path("TurnAroundiOS.entitlements"),

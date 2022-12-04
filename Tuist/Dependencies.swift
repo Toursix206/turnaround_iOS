@@ -64,7 +64,7 @@ let dependencies = Dependencies(
             requirement: .branch("master")
         ),
         .package(
-            url: "https://github.com/firebase/firebase-ios-sdk",
+            url: "https://github.com/firebase/firebase-ios-sdk.git",
             .upToNextMajor(from: "8.10.0")
         )
     ],

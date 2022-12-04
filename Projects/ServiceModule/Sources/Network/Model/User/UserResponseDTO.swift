@@ -7,3 +7,19 @@
 //
 
 import Foundation
+
+public extension UserDTO.Response {
+
+    struct CheckUserInfoResponseDTO: Decodable {
+
+        public let nickname: String
+        public let point: Int
+        public let profileType: String
+
+        enum CodingKeys: String, CodingKey {
+            case nickname
+            case point
+            case profileType
+        }
+    }
+}

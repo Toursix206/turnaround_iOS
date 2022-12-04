@@ -6,6 +6,7 @@ import ProjectDescription
 /// See https://docs.tuist.io/guides/helpers/
 
 import ProjectDescription
+import MyPlugin
 
 public extension Project {
     static func makeModule(
@@ -25,7 +26,8 @@ public extension Project {
         resourceSynthesizers: ProjectDescription.ResourceSynthesizer
     ) -> Project {
         let settings: Settings = .settings(
-            base: ["OTHER_LDFLAGS" : "$(inherited) -all_load"],
+            base: .init()
+                .setFirebaseDependency(),
             configurations: [
                 .debug(name: .debug),
                 .release(name: .release)

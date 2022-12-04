@@ -11,8 +11,10 @@ import ServiceModule
 
 public protocol ServiceProviderType: AnyObject {
     var authRepository: AuthRepository { get }
+    var userRepository: UserRepository { get }
 }
 public final class ServiceProvider: ServiceProviderType {
     public init() { }
     lazy public var authRepository: AuthRepository = AuthRepositoryImp(provider: self)
+    lazy public var userRepository: UserRepository = UserRepositoryImp(provider: self)
 }

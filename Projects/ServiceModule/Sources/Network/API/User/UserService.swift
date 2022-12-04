@@ -11,6 +11,7 @@ import Alamofire
 
 public enum UserService {
     case checkNickname(_ dto: UserDTO.Request.CheckNicnameRequestDTO)
+    case checkUserInfo
 
 }
 
@@ -23,6 +24,9 @@ extension UserService: TargetType {
         switch self {
         case .checkNickname:
             return "user/nickname/check"
+            
+        case .checkUserInfo:
+            return "user"
 
         }
     }
@@ -31,6 +35,9 @@ extension UserService: TargetType {
         switch self {
         case .checkNickname:
             return .post
+            
+        case .checkUserInfo:
+            return .get
 
         }
     }
@@ -39,6 +46,9 @@ extension UserService: TargetType {
         switch self {
         case let .checkNickname(dto):
             return .body(dto)
+            
+        case .checkUserInfo:
+            return .requestPlain
         }
     }
 }
