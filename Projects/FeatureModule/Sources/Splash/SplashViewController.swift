@@ -81,9 +81,8 @@ extension SplashViewController {
 
 extension SplashViewController {
     private func transferToTabBar(_ isUser: Bool) {
-        print("왜 호출안돼 왜 호출안돼 왜 호출안돼 왜 호출안돼 왜 호출안돼 🌺🌺")
         let tabBarVC = TurnAroundTabBarViewController()
-        changeRootViewController(to: UINavigationController(rootViewController: tabBarVC))
+        changeRootViewController(to: tabBarVC)
     }
 
     private func transferToOnboarding(_ isLoginFlow: Bool) {

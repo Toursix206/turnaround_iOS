@@ -194,7 +194,7 @@ extension FirstProfileSettingViewController {
 
     private func transferToTabBar(_ isSuccess: Bool) {
         let tabBarVC = TurnAroundTabBarViewController()
-        changeRootViewController(to: UINavigationController(rootViewController: tabBarVC))
+        changeRootViewController(to: tabBarVC)
     }
 }
 
