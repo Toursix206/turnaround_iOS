@@ -68,7 +68,6 @@ extension SplashReactor {
 
             case let .updateAccessToken(accessToken):
                 Keychain.shared.setAccessToken(accessToken: accessToken)
-                print("얜또 왜이래 \(accessToken)")
                 return .just(.setIsUser(true))
 
             case let .updateRefreshToken(refreshtoken):

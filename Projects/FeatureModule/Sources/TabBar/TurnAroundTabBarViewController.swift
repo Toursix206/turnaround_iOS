@@ -18,7 +18,7 @@ public class TurnAroundTabBarViewController: UITabBarController {
         return tabbar
     }()
 
-    private let backgroundView: UIView = {
+    public let backgroundView: UIView = {
         let view = UIView()
         view.layer.applySketchShadow(color: UIColor.black, alpha: 0.05, x: 0, y: -4, blur: 10, spread: 0)
         view.layer.cornerRadius = 20

@@ -66,8 +66,8 @@ public final class AuthRepositoryImp: BaseProvider, AuthRepository {
                 return
             }
 
-            self.event.onNext(.updateAccessToken(data.accessToken))
-            self.event.onNext(.updateRefreshToken(data.refreshToken))
+            self.event.onNext(.updateAccessToken(data.token.accessToken))
+            self.event.onNext(.updateRefreshToken(data.token.refreshToken))
         }
     }
 
@@ -88,7 +88,7 @@ public final class AuthRepositoryImp: BaseProvider, AuthRepository {
 
             self.event.onNext(.updateAccessToken(data.token.accessToken))
             self.event.onNext(.updateRefreshToken(data.token.refreshToken))
-            self.event.onNext(.userId(data.userId))
+            self.event.onNext(.userId(data.userId!))
         }
     }
 }

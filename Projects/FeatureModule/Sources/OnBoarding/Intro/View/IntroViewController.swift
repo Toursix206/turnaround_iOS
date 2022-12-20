@@ -188,7 +188,8 @@ extension IntroViewController {
 
     private func transferToTabBar(_ isSuccess: Bool) {
         reactor?.action.onNext(.initial)
-        print("🐣🐣🐣🐣🐣🐣🐣🐣🐣🐣🐣🐣🐣🐣🐣🐣🐣🐣🐣🐣isTabBarSuccess = \(isSuccess) 오예오예오예")
+        let tabBarVC = TurnAroundTabBarViewController()
+        changeRootViewController(to: UINavigationController(rootViewController: tabBarVC))
     }
 }
 

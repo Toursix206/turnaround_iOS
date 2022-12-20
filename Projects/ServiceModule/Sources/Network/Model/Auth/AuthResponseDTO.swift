@@ -13,7 +13,7 @@ public extension AuthDTO.Response {
     struct AuthResponseDTO: Decodable {
 
         public let token: Token
-        public let userId: Int
+        public let userId: Int?
 
         enum CodingKeys: String, CodingKey {
             case token
