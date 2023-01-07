@@ -32,5 +32,6 @@ public extension TargetDependency.SPM {
     static let FirebaseCrashlytics = TargetDependency.external(name: "FirebaseCrashlytics")
     static let FirebaseMessaging = TargetDependency.external(name: "FirebaseMessaging")
     static let FirebaseAnalytics = TargetDependency.external(name: "FirebaseAnalytics")
+    static let Kingfisher = TargetDependency.external(name: "Kingfisher")
 }
 

@@ -66,6 +66,10 @@ let dependencies = Dependencies(
         .package(
             url: "https://github.com/firebase/firebase-ios-sdk.git",
             .upToNextMajor(from: "8.10.0")
+        ),
+        .remote(
+            url: "https://github.com/onevcat/Kingfisher.git",
+            requirement: .upToNextMajor(from: "7.0")
         )
     ],
     platforms: [.iOS]
