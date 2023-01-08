@@ -111,8 +111,4 @@ public final class ActivityTabReactor: Reactor {
         }
         return Observable.merge(mutation, serviceMutation)
     }
-    
-    init(initialState: State) {
-        self.initialState = initialState
-    }
 }

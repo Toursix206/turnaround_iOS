@@ -23,7 +23,9 @@ extension TurnAroundTabBarItem {
         case .bangtaverse:
             return UINavigationController(rootViewController: BangtaverseMainViewController())
         case .activity:
-            return UINavigationController(rootViewController: ThirdViewController())
+            let provider = ServiceProvider()
+            let reactor = ActivityTabReactor(provider: provider)
+            return UINavigationController(rootViewController: ActivityTabViewController(reactor))
         case .mypage:
             let provider = ServiceProvider()
             let reactor = MyPageReactor(provider: provider)

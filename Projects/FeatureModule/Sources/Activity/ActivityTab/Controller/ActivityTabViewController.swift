@@ -18,13 +18,24 @@ final class ActivityTabViewController: UIViewController, View {
     var disposeBag = DisposeBag()
     var mainView = ActivityTabView()
     
-    private lazy var tableViewDataSource = RxTableViewSectionedReloadDataSource<ActivityTableViewSectionModel> { dataSource, tableView, indexPath, item in
-        switch item {
-        case .defaultCell(let reactor):
-            guard let cell = mainView.tableView.dequeueReusableCell(withIdentifier: ActivityListTableViewCell.identifier, for: indexPath) as? ActivityListTableViewCell else { return }
-            cell.reactor = reactor
-            return cell
-        }
+//    private lazy var tableViewDataSource = RxTableViewSectionedReloadDataSource<ActivityTableViewSectionModel> { dataSource, tableView, indexPath, item in
+//        switch item {
+//        case .defaultCell(let reactor):
+//            guard let cell = mainView.tableView.dequeueReusableCell(withIdentifier: ActivityListTableViewCell.identifier, for: indexPath) as? ActivityListTableViewCell else { return }
+//            cell.reactor = reactor
+//            return cell
+//        }
+//    }
+    
+    // MARK: - initializer
+    
+    public init(_ reactor: Reactor) {
+        super.init(nibName: nil, bundle: nil)
+        self.reactor = reactor
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
     
     // MARK: - Life Cycle
