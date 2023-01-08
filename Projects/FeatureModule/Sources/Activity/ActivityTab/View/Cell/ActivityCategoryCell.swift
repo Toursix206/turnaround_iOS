@@ -7,8 +7,16 @@
 //
 
 import UIKit
+import ReactorKit
+import Then
 
-public final class ActivityCategoryCell: UICollectionViewCell {
+final class ActivityCategoryCell: UICollectionViewCell, View {
+    
+    typealias Reactor = ActivityCategoryCollectionViewCellReactor
+    
+    var disposeBag = DisposeBag()
+    
+    // MARK: - UI Components
     
     let imageView = UIImageView().then {
         $0.image = UIImage(asset: FeatureModuleImages(name: "Star_On"))
@@ -30,6 +38,8 @@ public final class ActivityCategoryCell: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
+    // MARK: - render
+    
     private func render() {
         addSubViews([imageView, titleLabel])
         
@@ -41,5 +51,10 @@ public final class ActivityCategoryCell: UICollectionViewCell {
         titleLabel.snp.makeConstraints {
             $0.top.equalTo(imageView.snp.bottom).offset(8)
         }
+    }
+    
+    func bind(reactor: Reactor) {
+        imageView.kf.setImage(with: reactor.currentState.imageURL)
+        titleLabel.text = reactor.currentState.title
     }
 }

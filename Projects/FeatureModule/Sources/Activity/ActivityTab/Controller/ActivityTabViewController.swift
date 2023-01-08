@@ -6,4 +6,53 @@
 //  Copyright © 2022 turnaround.io. All rights reserved.
 //
 
-import Foundation
+import UIKit
+import RxSwift
+import ReactorKit
+import RxDataSources
+
+final class ActivityTabViewController: UIViewController, View {
+    
+    typealias Reactor = ActivityTabReactor
+    
+    var disposeBag = DisposeBag()
+    var mainView = ActivityTabView()
+    
+    private lazy var tableViewDataSource = RxTableViewSectionedReloadDataSource<ActivityTableViewSectionModel> { dataSource, tableView, indexPath, item in
+        switch item {
+        case .defaultCell(let reactor):
+            guard let cell = mainView.tableView.dequeueReusableCell(withIdentifier: ActivityListTableViewCell.identifier, for: indexPath) as? ActivityListTableViewCell else { return }
+            cell.reactor = reactor
+            return cell
+        }
+    }
+    
+    // MARK: - Life Cycle
+    
+    override func loadView() {
+        super.loadView()
+        view = mainView
+    }
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        guard let reactor = self.reactor else { return }
+        bind(reactor: reactor)
+    }
+    
+    func bind(reactor: ActivityTabReactor) {
+        bindAction(reactor: reactor)
+        bindState(reactor: reactor)
+    }
+    
+    private func bindAction(reactor: ActivityTabReactor) {
+        rx.viewWillAppear
+            .map { _ in Reactor.Action.viewWillAppear }
+            .bind(to: reactor.action)
+            .disposed(by: disposeBag)
+    }
+    
+    private func bindState(reactor: ActivityTabReactor) {
+        
+    }
+}

@@ -15,4 +15,7 @@ final public class NetworkService {
 
     public let authRepository = AuthAPI(isLogging: true)
     public let userRepository = UserAPI(isLogging: true)
+    
+    // MARK: - Activity
+    public let activityRepository = ActivityAPI(isLogging: true)
 }

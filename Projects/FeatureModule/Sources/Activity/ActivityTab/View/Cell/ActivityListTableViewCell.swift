@@ -7,8 +7,12 @@
 //
 
 import UIKit
+import ReactorKit
+import Kingfisher
 
-public final class ActivityListTableViewCell: UITableViewCell {
+final class ActivityListTableViewCell: UITableViewCell, View {
+    
+    typealias reactor = ActivityListTableViewCellReactor
     
     static let identifier = "ActivityListTableViewCell"
     
@@ -30,6 +34,8 @@ public final class ActivityListTableViewCell: UITableViewCell {
             }
         }
     }
+    
+    public var disposeBag = DisposeBag()
     
     // MARK: - UI Components
     
@@ -60,7 +66,7 @@ public final class ActivityListTableViewCell: UITableViewCell {
     
     // MARK: - initializer
     
-    public override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         render()
     }
@@ -98,5 +104,21 @@ public final class ActivityListTableViewCell: UITableViewCell {
             $0.bottom.equalTo(descriptionLabel.snp.top).offset(-2)
             $0.leading.equalTo(activityImageView.snp.trailing).offset(14)
         }
+    }
+    
+    // bind with reactor
+    func bind(reactor: ActivityListTableViewCellReactor) {
+        activityImageView.kf.setImage(with: reactor.currentState.imageURL)
+        switch reactor.currentState.type {
+        case "FREE":
+            price = .free
+        case "KIT":
+            price = .kit
+        default:
+            price = .free
+        }
+        titleLabel.text = reactor.currentState.title
+        descriptionLabel.text = reactor.currentState.description
+        
     }
 }
