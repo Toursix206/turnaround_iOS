@@ -17,11 +17,15 @@ final class ActivityTabReactor: Reactor {
         
     }
     
-    enum State {
+    struct State {
         
     }
     
     func mutate(action: Action) -> Observable<Mutation> {
         
+    }
+    
+    init(initialState: State) {
+        self.initialState = initialState
     }
 }
