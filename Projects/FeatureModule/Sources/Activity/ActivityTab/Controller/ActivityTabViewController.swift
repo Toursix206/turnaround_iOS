@@ -18,6 +18,15 @@ final class ActivityTabViewController: UIViewController, View {
     var disposeBag = DisposeBag()
     var mainView = ActivityTabView()
     
+    private lazy var collectionViewDataSource = RxCollectionViewSectionedReloadDataSource<ActivityCategoryViewSectionModel> { dataSource, collectionView, indexPath, item -> UICollectionViewCell in
+        switch item {
+        case .defaultCell(let reactor):
+            guard let cell = self.mainView.categoryCollectionView.dequeueReusableCell(withReuseIdentifier: ActivityCategoryCell.identifier, for: indexPath) as? ActivityCategoryCell else { return UICollectionViewCell() }
+            cell.reactor = reactor
+            return cell
+        }
+    }
+    
     private lazy var tableViewDataSource = RxTableViewSectionedReloadDataSource<ActivityTableViewSectionModel> { dataSource, tableView, indexPath, item -> UITableViewCell in
         switch item {
         case .defaultCell(let reactor):
@@ -64,11 +73,25 @@ final class ActivityTabViewController: UIViewController, View {
             .map { _ in Reactor.Action.viewWillAppear }
             .bind(to: reactor.action)
             .disposed(by: disposeBag)
+        
+        mainView.categoryCollectionView.rx.itemSelected
+            .map { Reactor.Action.selectCategory($0) }
+            .bind(to: reactor.action)
+            .disposed(by: disposeBag)
+        
+        mainView.tableView.rx.itemSelected
+            .map { Reactor.Action.selectActivity($0) }
+            .bind(to: reactor.action)
+            .disposed(by: disposeBag)
     }
     
     private func bindState(reactor: ActivityTabReactor) {
         reactor.state.compactMap { $0.activities }
             .bind(to: mainView.tableView.rx.items(dataSource: self.tableViewDataSource))
+            .disposed(by: disposeBag)
+        
+        reactor.state.compactMap { $0.categories }
+            .bind(to: mainView.categoryCollectionView.rx.items(dataSource: self.collectionViewDataSource))
             .disposed(by: disposeBag)
     }
 }

@@ -25,13 +25,9 @@ enum ActivityCategoryCollectionViewSection {
 public final class ActivityTabReactor: Reactor {
     
     private let provider: ServiceProviderType
-//    private let type: SignInType?
-//    private let token: String?
 
     init(provider: ServiceProviderType) {
         self.provider = provider
-//        self.type = signinType
-//        self.token = oAuthToken
     }
     
     public var initialState: State = State()
@@ -44,8 +40,9 @@ public final class ActivityTabReactor: Reactor {
     }
     
     public enum Mutation {
-        case setCategory(IndexPath?)
+        case setSelectedCategoryIndexPath(IndexPath?)
         case setSelectedActivityIndexPath(IndexPath?)
+        case setCategories([ActivityCategoryCollectionViewCellModel]?)
         case setActivities([ActivityTableViewCellModel]?)
         case setLastPage(Int)
         case setNextPage(Int)
@@ -55,7 +52,7 @@ public final class ActivityTabReactor: Reactor {
     public struct State {
         var selectedCategoryIndexPath: IndexPath?
         var selectedTableViewIndexPath: IndexPath?
-        var categories: [ActivityCategoryCollectionViewCellModel]?
+        var categories: [ActivityCategoryViewSectionModel]?
         var activities: [ActivityTableViewSectionModel]?
         var lastPage: Int?
         var nextPage: Int?
@@ -69,11 +66,12 @@ public final class ActivityTabReactor: Reactor {
             provider.activityRepository.getActivities(dto)
 
             return Observable.concat([
-                Observable.just(.setCategory(nil)),
+                Observable.just(.setCategories(ActivityCategoryCollectionViewCellModel.initialModels)),
+                Observable.just(.setSelectedCategoryIndexPath(nil)),
                 Observable.just(.setSelectedActivityIndexPath(nil)),
             ])
         case .selectCategory(let indexPath):
-            return Observable.just(.setCategory(indexPath))
+            return Observable.just(.setSelectedCategoryIndexPath(indexPath))
         case .selectActivity(let indexPath):
             return Observable.just(.setSelectedActivityIndexPath(indexPath))
         }
@@ -106,10 +104,10 @@ public final class ActivityTabReactor: Reactor {
         case .setActivities(let cellModels):
             guard let cellModels = cellModels else { return newState }
             let cellReactors = cellModels.compactMap { ActivityTableViewSection.defaultCell(ActivityListTableViewCellReactor(state: $0))  }
-            var sectionModel = ActivityTableViewSectionModel(model: 0, items: cellReactors)
+            let sectionModel = ActivityTableViewSectionModel(model: 0, items: cellReactors)
             newState.activities = [sectionModel]
-        case .setCategory(_):
-            break
+        case .setSelectedCategoryIndexPath(let indexPath):
+            newState.selectedCategoryIndexPath = indexPath
         case .setSelectedActivityIndexPath(let indexPath):
             newState.selectedTableViewIndexPath = indexPath
         case .setLastPage(let page):
@@ -118,6 +116,11 @@ public final class ActivityTabReactor: Reactor {
             newState.nextPage = page
         case .setError(let errorMessage):
             newState.errorMessage = errorMessage
+        case .setCategories(let cellModels):
+            guard let cellModels = cellModels else { return newState }
+            let cellReactors = cellModels.compactMap { ActivityCategoryCollectionViewSection.defaultCell(ActivityCategoryCollectionViewCellReactor(state: $0)) }
+            let sectionModel = ActivityCategoryViewSectionModel(model: 0, items: cellReactors)
+            newState.categories = [sectionModel]
         }
         
         return newState

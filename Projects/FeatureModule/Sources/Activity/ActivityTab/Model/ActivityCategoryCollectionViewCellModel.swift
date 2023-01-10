@@ -8,13 +8,14 @@
 
 import Foundation
 
-struct ActivityCategoryCollectionViewCellModel {
-    var imageURL: URL?
+public struct ActivityCategoryCollectionViewCellModel {
     var title: String
+
+    static let initialModels: [Self] = ["전체", "침구류", "세탁기", "책상", "주방", "화장실", "기타가구", "자기계발"].map { Self(title: $0) }
 }
 
 extension ActivityCategoryCollectionViewCellModel: Equatable {
-    static func == (lhs: ActivityCategoryCollectionViewCellModel, rhs: ActivityCategoryCollectionViewCellModel) -> Bool {
+    public static func == (lhs: ActivityCategoryCollectionViewCellModel, rhs: ActivityCategoryCollectionViewCellModel) -> Bool {
         lhs.title == rhs.title
     }
 }

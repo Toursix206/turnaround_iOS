@@ -12,6 +12,8 @@ import Then
 
 final class ActivityCategoryCell: UICollectionViewCell, View {
     
+    static let identifier = "ActivityCategoryCell"
+    
     typealias Reactor = ActivityCategoryCollectionViewCellReactor
     
     var disposeBag = DisposeBag()
@@ -50,11 +52,12 @@ final class ActivityCategoryCell: UICollectionViewCell, View {
         
         titleLabel.snp.makeConstraints {
             $0.top.equalTo(imageView.snp.bottom).offset(8)
+            $0.centerX.equalToSuperview()
         }
     }
     
     func bind(reactor: Reactor) {
-        imageView.kf.setImage(with: reactor.currentState.imageURL)
+//        imageView.kf.setImage(with: reactor.currentState.imageURL)
         titleLabel.text = reactor.currentState.title
     }
 }

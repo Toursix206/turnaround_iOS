@@ -8,6 +8,7 @@
 
 import UIKit
 import SnapKit
+import Then
 
 public final class ActivityTabView: UIView {
     
@@ -19,7 +20,9 @@ public final class ActivityTabView: UIView {
     }
     
     lazy var categoryCollectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewLayout()).then {
+        $0.showsHorizontalScrollIndicator = false
         let layout = UICollectionViewFlowLayout()
+        layout.scrollDirection = .horizontal
         layout.minimumInteritemSpacing = 10
         layout.itemSize = CGSize(width: 62, height: 90)
         $0.setCollectionViewLayout(layout, animated: true)
