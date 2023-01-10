@@ -51,7 +51,9 @@ final class ActivityTabViewController: UIViewController, View {
     }
     
     func bind(reactor: ActivityTabReactor) {
-        mainView.tableView.delegate = self
+//        mainView.tableView.delegate = self
+        mainView.tableView.rx.setDelegate(self)
+            .disposed(by: disposeBag)
         mainView.tableView.dataSource = nil
         bindAction(reactor: reactor)
         bindState(reactor: reactor)
@@ -73,6 +75,10 @@ final class ActivityTabViewController: UIViewController, View {
 
 extension ActivityTabViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 130
+        return 140
+    }
+    
+    func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+        return 10
     }
 }

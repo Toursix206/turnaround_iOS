@@ -31,6 +31,7 @@ public final class ActivityTabView: UIView {
     }
     
     lazy var tableView = UITableView(frame: .init(), style: .plain).then {
+        $0.separatorStyle = .none
         $0.register(ActivityListTableViewCell.self, forCellReuseIdentifier: ActivityListTableViewCell.identifier)
         $0.backgroundColor = UIColor.clear
         $0.delegate = nil

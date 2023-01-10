@@ -72,6 +72,8 @@ final class ActivityListTableViewCell: UITableViewCell, View {
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
+        self.backgroundColor = .clear
+        self.selectionStyle = .none
         render()
     }
     
@@ -79,12 +81,21 @@ final class ActivityListTableViewCell: UITableViewCell, View {
         fatalError("init(coder:) has not been implemented")
     }
     
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        contentView.frame = contentView.frame.inset(by: UIEdgeInsets(top: 0, left: 0, bottom: 10, right: 0))
+        contentView.backgroundColor = .white
+        contentView.layer.applySketchShadow(color: .black, alpha: 0.1, x: 0, y: 6, blur: 45, spread: 0)
+        contentView.makeRounded(cornerRadius: 16)
+        self.layer.cornerRadius = 16
+        self.layer.masksToBounds = true
+        self.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
+    }
+    
     // MARK: - layout
     
     private func render() {
-        addSubViews([activityImageView, priceLabel, titleLabel, descriptionLabel])
-        
-        makeRounded(cornerRadius: 16)
+        contentView.addSubViews([activityImageView, priceLabel, titleLabel, descriptionLabel])
         
         activityImageView.snp.makeConstraints {
             $0.leading.equalToSuperview().offset(14)
