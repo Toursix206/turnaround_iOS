@@ -57,6 +57,9 @@ public final class ActivityTabReactor: Reactor {
         var selectedTableViewIndexPath: IndexPath?
         var categories: [ActivityCategoryCollectionViewCellModel]?
         var activities: [ActivityTableViewSectionModel]?
+        var lastPage: Int?
+        var nextPage: Int?
+        var errorMessage: String?
     }
     
     public func mutate(action: Action) -> Observable<Mutation> {
@@ -64,10 +67,10 @@ public final class ActivityTabReactor: Reactor {
         case .viewWillAppear:
             let dto = ActivityDTO.Request.ListRequestDTO()
             provider.activityRepository.getActivities(dto)
-            
+
             return Observable.concat([
                 Observable.just(.setCategory(nil)),
-                Observable.just(.setSelectedActivityIndexPath(nil))
+                Observable.just(.setSelectedActivityIndexPath(nil)),
             ])
         case .selectCategory(let indexPath):
             return Observable.just(.setCategory(indexPath))
@@ -76,22 +79,7 @@ public final class ActivityTabReactor: Reactor {
         }
     }
     
-    public func reduce(state: State, mutation: Action) -> State {
-        var newState = state
-        
-//        switch mutation {
-//        case .selectCategory(let indexPath):
-////            newState.
-//        case .selectActivity(let indexPath):
-//        case .viewWillAppear:
-//            break
-//        }
-        
-        
-        return newState
-    }
-    
-    public func transform(mutation: Observable<Mutation>) -> Observable<Mutation> {
+    public func transform(mutation: Observable<Mutation>) -> Observable<Mutation> { // 네트워킹 작업 처리
         let serviceMutation = provider.activityRepository.event.flatMap { event -> Observable<Mutation> in
             switch event {
                 
@@ -110,5 +98,28 @@ public final class ActivityTabReactor: Reactor {
             }
         }
         return Observable.merge(mutation, serviceMutation)
+    }
+    
+    public func reduce(state: State, mutation: Mutation) -> State {
+        var newState = state
+        switch mutation {
+        case .setActivities(let cellModels):
+            guard let cellModels = cellModels else { return newState }
+            let cellReactors = cellModels.compactMap { ActivityTableViewSection.defaultCell(ActivityListTableViewCellReactor(state: $0))  }
+            var sectionModel = ActivityTableViewSectionModel(model: 0, items: cellReactors)
+            newState.activities = [sectionModel]
+        case .setCategory(_):
+            break
+        case .setSelectedActivityIndexPath(let indexPath):
+            newState.selectedTableViewIndexPath = indexPath
+        case .setLastPage(let page):
+            newState.lastPage = page
+        case .setNextPage(let page):
+            newState.nextPage = page
+        case .setError(let errorMessage):
+            newState.errorMessage = errorMessage
+        }
+        
+        return newState
     }
 }

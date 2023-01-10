@@ -24,12 +24,15 @@ final class ActivityListTableViewCell: UITableViewCell, View {
         didSet {
             switch price {
             case .free:
-                priceLabel.text = "FREE"
-                priceLabel.textColor = FeatureModuleAsset.ColorAsset.gray9.color
+                priceLabel.setAttributedTitle(NSAttributedString(string: "FREE",
+                                                                 attributes: [.foregroundColor: FeatureModuleAsset.ColorAsset.gray9.color,
+                                                                              .font: UIFont.customFont(.body2Bold)]),
+                                              for: .normal)
                 priceLabel.layer.borderColor = FeatureModuleAsset.ColorAsset.gray9.color.cgColor
             case .kit:
-                priceLabel.text = "KIT"
-                priceLabel.textColor = FeatureModuleAsset.ColorAsset.point.color
+                priceLabel.setAttributedTitle(NSAttributedString(string: "KIT",
+                                                                 attributes: [.foregroundColor: FeatureModuleAsset.ColorAsset.point.color,
+                                                                    .font: UIFont.customFont(.body2Bold)]), for: .normal)
                 priceLabel.layer.borderColor = FeatureModuleAsset.ColorAsset.point.color.cgColor
             }
         }
@@ -44,9 +47,10 @@ final class ActivityListTableViewCell: UITableViewCell, View {
         $0.makeRounded(cornerRadius: 16)
     }
     
-    let priceLabel = UILabel().then {
+    let priceLabel = UIButton(type: .custom).then {
+        $0.layer.borderWidth = 1
+        $0.isUserInteractionEnabled = false
         $0.makeRounded(cornerRadius: 4)
-        $0.font = UIFont.customFont(.body1Bold)
     }
     
     let titleLabel = UILabel().then {
@@ -86,13 +90,14 @@ final class ActivityListTableViewCell: UITableViewCell, View {
             $0.leading.equalToSuperview().offset(14)
             $0.top.equalToSuperview().offset(15)
             $0.bottom.equalToSuperview().offset(-15)
-            $0.width.equalToSuperview().offset(84)
+            $0.width.equalTo(84)
         }
         
         priceLabel.snp.makeConstraints {
             $0.leading.equalTo(activityImageView.snp.trailing).offset(14)
             $0.top.equalToSuperview().offset(17)
-            $0.width.equalTo(20)
+            $0.width.equalTo(42)
+            $0.height.equalTo(20)
         }
         
         descriptionLabel.snp.makeConstraints {
@@ -108,7 +113,8 @@ final class ActivityListTableViewCell: UITableViewCell, View {
     
     // bind with reactor
     func bind(reactor: ActivityListTableViewCellReactor) {
-        activityImageView.kf.setImage(with: reactor.currentState.imageURL)
+        titleLabel.text = reactor.currentState.title
+        descriptionLabel.text = reactor.currentState.description
         switch reactor.currentState.type {
         case "FREE":
             price = .free
@@ -117,8 +123,8 @@ final class ActivityListTableViewCell: UITableViewCell, View {
         default:
             price = .free
         }
-        titleLabel.text = reactor.currentState.title
-        descriptionLabel.text = reactor.currentState.description
-        
+//        activityImageView.kf.setImage(with: reactor.currentState.imageURL)
+        // 임시
+        activityImageView.image = UIImage.remove
     }
 }

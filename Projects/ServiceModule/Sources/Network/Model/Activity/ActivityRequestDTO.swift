@@ -14,14 +14,14 @@ public extension ActivityDTO.Request {
         public let category: String?
         public let page: Int
         public let size: Int
-        public let sort: [String] // [칼럼명, ASC, ...]
+        public let sort: String // 칼럼명, ASC
         public let type: String
         
         public init(
             category: String? = nil,
             page: Int = 0,
             size: Int = 100,
-            sort: [String],
+            sort: String,
             type: String = "FREE" // MVP 단계에서는 FREE로 지정
         ) {
             self.category = category
@@ -32,15 +32,16 @@ public extension ActivityDTO.Request {
         }
         
         public init() {
-            self.init(sort: [
-                "BEDDING, ASC",
-                "TABLE, ASC",
-                "WASHER, ASC",
-                "KITCHEN, ASC",
-                "RESTROOM, ASC",
-                "SELF_DEVELOPMENT, ASC",
-                "ETC, ASC"
-            ])
+            self.init(sort:
+//                "BEDDING, ASC",
+//                "TABLE, ASC",
+//                "WASHER, ASC",
+//                "KITCHEN, ASC",
+//                "RESTROOM, ASC",
+//                "SELF_DEVELOPMENT, ASC",
+//                "ETC, ASC"
+                "DESC"
+            )
         }
     }
 }

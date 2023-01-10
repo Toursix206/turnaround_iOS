@@ -18,14 +18,14 @@ final class ActivityTabViewController: UIViewController, View {
     var disposeBag = DisposeBag()
     var mainView = ActivityTabView()
     
-//    private lazy var tableViewDataSource = RxTableViewSectionedReloadDataSource<ActivityTableViewSectionModel> { dataSource, tableView, indexPath, item in
-//        switch item {
-//        case .defaultCell(let reactor):
-//            guard let cell = mainView.tableView.dequeueReusableCell(withIdentifier: ActivityListTableViewCell.identifier, for: indexPath) as? ActivityListTableViewCell else { return }
-//            cell.reactor = reactor
-//            return cell
-//        }
-//    }
+    private lazy var tableViewDataSource = RxTableViewSectionedReloadDataSource<ActivityTableViewSectionModel> { dataSource, tableView, indexPath, item -> UITableViewCell in
+        switch item {
+        case .defaultCell(let reactor):
+            guard let cell = self.mainView.tableView.dequeueReusableCell(withIdentifier: ActivityListTableViewCell.identifier, for: indexPath) as? ActivityListTableViewCell else { return UITableViewCell() }
+            cell.reactor = reactor
+            return cell
+        }
+    }
     
     // MARK: - initializer
     
@@ -47,11 +47,12 @@ final class ActivityTabViewController: UIViewController, View {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        guard let reactor = self.reactor else { return }
-        bind(reactor: reactor)
+        navigationController?.navigationBar.isHidden = true
     }
     
     func bind(reactor: ActivityTabReactor) {
+        mainView.tableView.delegate = self
+        mainView.tableView.dataSource = nil
         bindAction(reactor: reactor)
         bindState(reactor: reactor)
     }
@@ -64,6 +65,14 @@ final class ActivityTabViewController: UIViewController, View {
     }
     
     private func bindState(reactor: ActivityTabReactor) {
-        
+        reactor.state.compactMap { $0.activities }
+            .bind(to: mainView.tableView.rx.items(dataSource: self.tableViewDataSource))
+            .disposed(by: disposeBag)
+    }
+}
+
+extension ActivityTabViewController: UITableViewDelegate {
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 130
     }
 }

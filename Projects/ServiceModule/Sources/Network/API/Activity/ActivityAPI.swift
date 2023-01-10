@@ -22,7 +22,7 @@ public final class ActivityAPI: APIRequestLoader<ActivityService>, ActivityAPIPr
         fetchData(
             target: .getActivities(activityListRequestDTO),
             responseData: BaseResponseType<ActivityDTO.Response.ActivitiesResponseDTO>.self,
-            isWithInterceptor: false
+            isWithInterceptor: true
         ) { res, err in
             completion(res, err)
         }
