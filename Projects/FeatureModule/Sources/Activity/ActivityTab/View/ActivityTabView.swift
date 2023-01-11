@@ -71,7 +71,7 @@ public final class ActivityTabView: UIView {
         
         tableViewBackgroundView.snp.makeConstraints {
             $0.width.equalToSuperview()
-            $0.top.equalToSuperview().offset(197)
+            $0.top.equalTo(categoryCollectionView.snp.bottom).offset(13)
             $0.bottom.equalToSuperview()
         }
         
