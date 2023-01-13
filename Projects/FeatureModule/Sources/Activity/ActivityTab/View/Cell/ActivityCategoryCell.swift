@@ -20,9 +20,7 @@ final class ActivityCategoryCell: UICollectionViewCell, View {
     
     // MARK: - UI Components
     
-    let imageView = UIImageView().then {
-        $0.image = UIImage(asset: FeatureModuleImages(name: "Star_On"))
-    }
+    let imageView = UIImageView()
     
     let titleLabel = UILabel().then {
         $0.font = UIFont.customFont(.body2Regular)
@@ -57,7 +55,11 @@ final class ActivityCategoryCell: UICollectionViewCell, View {
     }
     
     func bind(reactor: Reactor) {
-//        imageView.kf.setImage(with: reactor.currentState.imageURL)
+        imageView.image = FeatureModuleImages(name: reactor.currentState.imageTitle).image
         titleLabel.text = reactor.currentState.title
+    }
+    
+    override func prepareForReuse() {
+        self.reactor = nil
     }
 }

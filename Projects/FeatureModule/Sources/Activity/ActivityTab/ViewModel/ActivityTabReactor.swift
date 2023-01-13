@@ -71,6 +71,15 @@ public final class ActivityTabReactor: Reactor {
                 Observable.just(.setSelectedActivityIndexPath(nil)),
             ])
         case .selectCategory(let indexPath):
+            guard let categories = currentState.categories else { return .empty() }
+            switch categories[0].items[indexPath.row] {
+            case .defaultCell(let reactor):
+                let dto = ActivityDTO.Request.ListRequestDTO(category: reactor.currentState.englishTitle,
+                                                             page: 0,
+                                                             size: 100,
+                                                             sort: "DESC")
+                provider.activityRepository.getActivities(dto)
+            }
             return Observable.just(.setSelectedCategoryIndexPath(indexPath))
         case .selectActivity(let indexPath):
             return Observable.just(.setSelectedActivityIndexPath(indexPath))
@@ -80,7 +89,6 @@ public final class ActivityTabReactor: Reactor {
     public func transform(mutation: Observable<Mutation>) -> Observable<Mutation> { // 네트워킹 작업 처리
         let serviceMutation = provider.activityRepository.event.flatMap { event -> Observable<Mutation> in
             switch event {
-                
             case .contents(let contents):
                 let cellModels = contents.map {
                     ActivityTableViewCellModel(imageURL: URL(string: $0.imageUrl) ?? nil, title: $0.name, description: $0.description, type: $0.type)
@@ -107,6 +115,18 @@ public final class ActivityTabReactor: Reactor {
             let sectionModel = ActivityTableViewSectionModel(model: 0, items: cellReactors)
             newState.activities = [sectionModel]
         case .setSelectedCategoryIndexPath(let indexPath):
+            guard let indexPath = indexPath, let categories = state.categories?[0] else { return newState }
+            
+            for i in 0..<categories.items.count {
+                switch newState.categories?[0].items[i] {
+                case .defaultCell(let reactor):
+                    var cellModel = reactor.currentState
+                    cellModel.isSelected = i == indexPath.row ? true : false
+                    newState.categories?[0].items[i] = .defaultCell(ActivityCategoryCollectionViewCellReactor(state: cellModel))
+                case .none:
+                    return newState
+                }
+            }
             newState.selectedCategoryIndexPath = indexPath
         case .setSelectedActivityIndexPath(let indexPath):
             newState.selectedTableViewIndexPath = indexPath

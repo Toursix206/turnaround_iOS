@@ -60,7 +60,6 @@ final class ActivityTabViewController: UIViewController, View {
     }
     
     func bind(reactor: ActivityTabReactor) {
-//        mainView.tableView.delegate = self
         mainView.tableView.rx.setDelegate(self)
             .disposed(by: disposeBag)
         mainView.tableView.dataSource = nil
