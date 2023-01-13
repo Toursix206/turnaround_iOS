@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import RxDataSources
 
 public struct ActivityTableViewCellModel {
     var imageURL: URL?
@@ -15,7 +16,14 @@ public struct ActivityTableViewCellModel {
     var type : String
 }
 
-extension ActivityTableViewCellModel: Equatable {
+extension ActivityTableViewCellModel: IdentifiableType, Equatable {
+    
+    public typealias Identity = String
+    
+    public var identity: String {
+        return title
+    }
+    
     public static func == (lhs: ActivityTableViewCellModel, rhs: ActivityTableViewCellModel) -> Bool {
         lhs.title == rhs.title
     }

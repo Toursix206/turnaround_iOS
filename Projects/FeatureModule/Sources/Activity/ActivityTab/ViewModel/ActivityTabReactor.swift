@@ -11,15 +11,35 @@ import ReactorKit
 import RxDataSources
 import ServiceModule
 
-typealias ActivityTableViewSectionModel = SectionModel<Int, ActivityTableViewSection>
 typealias ActivityCategoryViewSectionModel = SectionModel<Int, ActivityCategoryCollectionViewSection>
+typealias ActivityTableViewSectionModel = AnimatableSectionModel<String, ActivityTableViewSection>
+
+enum ActivityCategoryCollectionViewSection {
+    case defaultCell(ActivityCategoryCollectionViewCellReactor)
+}
 
 enum ActivityTableViewSection {
     case defaultCell(ActivityListTableViewCellReactor)
 }
 
-enum ActivityCategoryCollectionViewSection {
-    case defaultCell(ActivityCategoryCollectionViewCellReactor)
+extension ActivityTableViewSection: Equatable, IdentifiableType {
+    static func == (lhs: ActivityTableViewSection, rhs: ActivityTableViewSection) -> Bool {
+        if case.defaultCell(let lhsCellReactor) = lhs, case.defaultCell(let rhsCellReactor) = rhs {
+            return lhsCellReactor.currentState.title == rhsCellReactor.currentState.title
+        } else {
+            return false
+        }
+    }
+    
+    typealias Identity = String
+    
+    var identity: String {
+        if case .defaultCell(let activityListTableViewCellReactor) = self {
+            return activityListTableViewCellReactor.currentState.title
+        } else {
+            return "".hashValue.formatted()
+        }
+    }
 }
 
 public final class ActivityTabReactor: Reactor {
@@ -112,7 +132,7 @@ public final class ActivityTabReactor: Reactor {
         case .setActivities(let cellModels):
             guard let cellModels = cellModels else { return newState }
             let cellReactors = cellModels.compactMap { ActivityTableViewSection.defaultCell(ActivityListTableViewCellReactor(state: $0))  }
-            let sectionModel = ActivityTableViewSectionModel(model: 0, items: cellReactors)
+            let sectionModel = ActivityTableViewSectionModel(model: "", items: cellReactors)
             newState.activities = [sectionModel]
         case .setSelectedCategoryIndexPath(let indexPath):
             guard let indexPath = indexPath, let categories = state.categories?[0] else { return newState }

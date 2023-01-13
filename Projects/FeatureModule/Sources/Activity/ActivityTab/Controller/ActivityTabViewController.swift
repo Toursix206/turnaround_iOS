@@ -26,8 +26,10 @@ final class ActivityTabViewController: UIViewController, View {
             return cell
         }
     }
-    
-    private lazy var tableViewDataSource = RxTableViewSectionedReloadDataSource<ActivityTableViewSectionModel> { dataSource, tableView, indexPath, item -> UITableViewCell in
+
+    private lazy var tableViewDataSource = RxTableViewSectionedAnimatedDataSource<ActivityTableViewSectionModel>(animationConfiguration: AnimationConfiguration(insertAnimation: .top,
+                                                                                                                                                                reloadAnimation: .fade,
+                                                                                                                                                                deleteAnimation: .fade)) { dataSource, tableView, indexPath, item -> UITableViewCell in
         switch item {
         case .defaultCell(let reactor):
             guard let cell = self.mainView.tableView.dequeueReusableCell(withIdentifier: ActivityListTableViewCell.identifier, for: indexPath) as? ActivityListTableViewCell else { return UITableViewCell() }
